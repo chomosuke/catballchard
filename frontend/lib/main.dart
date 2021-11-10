@@ -1,7 +1,9 @@
 import 'package:catballchard_frontend/fetch.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 void main() {
+  debugPaintSizeEnabled = true;
   runApp(const App());
 }
 

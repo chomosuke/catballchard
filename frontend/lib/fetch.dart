@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 
-final Uri baseUri = Uri.base.resolve('../');
+final Uri baseUri =
+    kReleaseMode ? Uri.base.resolve('../') : Uri.parse('http://localhost/');
 final Uri apiUri = baseUri.resolve('api/');
 
 Future<String> getHello() async {

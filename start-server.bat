@@ -1,2 +1,2 @@
 cd backend
-cargo run
+cargo +nightly run
