@@ -12,19 +12,16 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CatBallChard',
-      theme: ThemeData(
-        primarySwatch: Colors.brown,
-      ),
-      home: const MainPage(title: 'CatBallChard'),
-    );
+        title: 'CatBallChard',
+        theme: ThemeData(
+          primarySwatch: Colors.brown,
+        ),
+        home: const MainPage());
   }
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -50,7 +47,10 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        leading: Image.network(baseUri.resolve('favicon.ico').toString()),
+        title: const Text(
+            'CatBallChard - A narcissistic self-centric personal website'),
+        leadingWidth: 56 / 210 * 240,
       ),
       body: GridView.extent(
         maxCrossAxisExtent: 100,
