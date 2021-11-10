@@ -1,6 +1,6 @@
 CD frontend
 CALL flutter build web
 CD ..
-RD /S /Q "build"
-MD "build"
-COPY "frontend\build\web" "build"
+RD /S /Q "web_build"
+MD "web_build"
+COPY "frontend\build\web" "web_build"
