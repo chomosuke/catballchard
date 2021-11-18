@@ -12,11 +12,6 @@ fn hello() -> &'static str {
 #[launch]
 fn rocket() -> _ {
 
-    // initialize the server
-    let mut server = rocket::build()
-        .mount("/api", routes![hello])
-        .mount("/", FileServer::from("../web_build"));
-
     // format the commandline options
     let in_args: Vec<String> = env::args().collect();
     let mut args: HashMap<String, Vec<String>> = HashMap::new();
@@ -30,6 +25,19 @@ fn rocket() -> _ {
             args.get_mut(&current_key).unwrap().push(in_arg);
         }
     }
+
+    // custom config, default port 80
+    let config = rocket::Config::figment()
+        .merge(("port",
+            args.remove("-p").map(|mut v| v.pop())
+                .flatten().map(|s| s.parse::<u16>().ok())
+                .flatten().unwrap_or(80)
+        ));
+
+    // initialize the server
+    let mut server = rocket::custom(config)
+        .mount("/api", routes![hello])
+        .mount("/", FileServer::from("../web_build"));
 
     // if -d, run in debug mode which allows CORS
     if args.contains_key("-d") {
