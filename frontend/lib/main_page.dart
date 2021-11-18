@@ -29,7 +29,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         leading: Image.network(baseUri.resolve('favicon.ico').toString()),
-        title: const Text('CatBallChard - A narcissistic personal website'),
+        title: const Text('CatBallChard'),
         leadingWidth: 56 / 210 * 240,
       ),
       body: GridView.extent(
