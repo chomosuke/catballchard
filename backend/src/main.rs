@@ -30,8 +30,8 @@ fn rocket() -> _ {
     let config = rocket::Config::figment()
         .merge(("port",
             args.remove("-p").map(|mut v| v.pop())
-                .flatten().map(|s| s.parse::<u16>().ok())
-                .flatten().unwrap_or(80)
+                .flatten().unwrap_or(String::from("80"))
+                .parse::<u16>().unwrap()
         ));
 
     // initialize the server
