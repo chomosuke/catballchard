@@ -1,6 +1,6 @@
 {
-    "name": "catballchard_frontend",
-    "short_name": "catballchard_frontend",
+    "name": "catballchard",
+    "short_name": "catballchard",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

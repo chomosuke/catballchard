@@ -1,4 +1,4 @@
-import 'package:catballchard_frontend/fetch.dart';
+import 'package:frontend/fetch.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
