@@ -1,14 +1,11 @@
 #[macro_use] extern crate rocket;
-use rocket::fs::FileServer;
+use rocket::{fs::FileServer, Config};
 use rocket_cors::CorsOptions;
-use rocket::Config;
 use std::net::IpAddr;
 use structopt::StructOpt;
 
-#[get("/hello")]
-fn hello() -> &'static str {
-    "Hello"
-}
+mod api;
+use api::*;
 
 #[derive(StructOpt)]
 struct Args {
@@ -33,7 +30,7 @@ fn rocket() -> _ {
 
     // initialize the server
     let mut server = rocket::custom(config)
-        .mount("/api", routes![hello])
+        .mount("/api", routes![get_hello])
         .mount("/", FileServer::from("../web_build"));
 
     // if debug mode, allow CORS
