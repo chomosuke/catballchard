@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 rocket = "0.5.0-rc.1"
 rocket_cors = { git = "https://github.com/lawliet89/rocket_cors", rev = "a062933" }
+structopt = "0.3.25"

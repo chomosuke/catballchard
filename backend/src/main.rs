@@ -1,53 +1,43 @@
 #[macro_use] extern crate rocket;
 use rocket::fs::FileServer;
 use rocket_cors::CorsOptions;
-use std::env;
-use std::collections::HashMap;
 use rocket::Config;
 use std::net::IpAddr;
+use structopt::StructOpt;
 
 #[get("/hello")]
 fn hello() -> &'static str {
     "Hello"
 }
 
+#[derive(StructOpt)]
+struct Args {
+    #[structopt(short, long)]
+    debug: bool,
+
+    #[structopt(short, long)]
+    port: Option<u16>,
+
+    #[structopt(short, long)]
+    address: Option<IpAddr>,
+}
+
 #[launch]
 fn rocket() -> _ {
-
-    // format the commandline options
-    let in_args: Vec<String> = env::args().collect();
-    let mut args: HashMap<String, Vec<String>> = HashMap::new();
-    let mut current_key: String = String::from("default");
-    args.insert(current_key.clone(), Vec::new());
-    for in_arg in in_args {
-        if in_arg.as_bytes()[0] == '-' as u8 {
-            current_key = in_arg;
-            args.insert(current_key.clone(), Vec::new());
-        } else {
-            args.get_mut(&current_key).unwrap().push(in_arg);
-        }
-    }
+    let args = Args::from_args();
 
     // custom config, default port 80
     let config = Config::figment()
-        .merge(("port",
-            args.remove("-p").map(|mut v| v.pop())
-                .flatten().unwrap_or(String::from("80"))
-                .parse::<u16>().unwrap()
-        ))
-        .merge(("address",
-            args.remove("-a").map(|mut v| v.pop())
-                .flatten().map(|s| s.parse::<IpAddr>().unwrap())
-                .unwrap_or(Config::default().address)
-        ));
+        .merge(("port", args.port.unwrap_or(Config::default().port)))
+        .merge(("address", args.address.unwrap_or(Config::default().address)));
 
     // initialize the server
     let mut server = rocket::custom(config)
         .mount("/api", routes![hello])
         .mount("/", FileServer::from("../web_build"));
 
-    // if -d, run in debug mode which allows CORS
-    if args.contains_key("-d") {
+    // if debug mode, allow CORS
+    if args.debug {
         server = server.attach(CorsOptions::default().to_cors().unwrap());
     }
 
