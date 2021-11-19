@@ -1,5 +1,4 @@
-#[macro_use] extern crate rocket;
-use rocket::{fs::FileServer, Config};
+use rocket::{fs::FileServer, Config, launch, routes};
 use rocket_cors::CorsOptions;
 use std::net::IpAddr;
 use structopt::StructOpt;
