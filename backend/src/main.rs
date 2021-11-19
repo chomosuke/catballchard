@@ -3,6 +3,8 @@ use rocket::fs::FileServer;
 use rocket_cors::CorsOptions;
 use std::env;
 use std::collections::HashMap;
+use rocket::Config;
+use std::net::IpAddr;
 
 #[get("/hello")]
 fn hello() -> &'static str {
@@ -27,11 +29,16 @@ fn rocket() -> _ {
     }
 
     // custom config, default port 80
-    let config = rocket::Config::figment()
+    let config = Config::figment()
         .merge(("port",
             args.remove("-p").map(|mut v| v.pop())
                 .flatten().unwrap_or(String::from("80"))
                 .parse::<u16>().unwrap()
+        ))
+        .merge(("address",
+            args.remove("-a").map(|mut v| v.pop())
+                .flatten().map(|s| s.parse::<IpAddr>().unwrap())
+                .unwrap_or(Config::default().address)
         ));
 
     // initialize the server

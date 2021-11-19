@@ -22,4 +22,4 @@ COPY --from=backend_builder /usr/src/backend/target/release/backend ./backend/
 COPY --from=frontend_builder /home/root/frontend/build/web/ ./web_build
 
 WORKDIR /root/backend
-CMD ./backend -p $PORT
+CMD ./backend -p $PORT -a 0.0.0.0
