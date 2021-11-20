@@ -1,21 +1,20 @@
-use mongodb::bson::oid::ObjectId;
 use rocket::{get, serde::{json::Json, Serialize}, State};
 use super::super::db::DB;
 use futures::stream::StreamExt;
 
 #[derive(Serialize)]
 pub struct All {
-    ids: Vec<ObjectId>,
+    ids: Vec<String>,
 }
 
 #[get("/all")]
-pub async fn all(db: &State<DB>) -> Option<Json<All>> {
-    let mut names = db.names.find(None, None).await.ok()?;
+pub async fn all(db: &State<DB>) -> Json<All> {
+    let mut names = db.names.find(None, None).await.unwrap();
     let mut ids = Vec::new();
     while let Some(name) = names.next().await {
-        ids.push(name.ok()?._id);
+        ids.push(name.unwrap()._id.to_string());
     }
-    Some(Json(All {
+    Json(All {
         ids,
-    }))
+    })
 }

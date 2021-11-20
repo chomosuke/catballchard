@@ -6,14 +6,14 @@ use mongodb::{
     Database,
     Collection
 };
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 pub struct DB {
     pub db: Database,
     pub names: Collection<Name>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct Name {
     pub _id: ObjectId,
     pub name: String,
