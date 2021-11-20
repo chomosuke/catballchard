@@ -4,6 +4,7 @@ use crate::db::{DB, Name};
 
 #[derive(Deserialize)]
 pub struct New {
+    image_url: String,
     name: String,
 }
 
@@ -18,6 +19,7 @@ pub async fn add(db: &State<DB>, new: Json<New>) -> Json<ID> {
     loop {
         let result = db.names.insert_one(Name {
             _id,
+            image_url: new.image_url.clone(),
             name: new.name.clone(),
         }, None).await;
         if let Err(e) = &result {

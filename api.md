@@ -2,6 +2,7 @@
 - request:
 ```
 {
+    image_url: string,
     name: string,
 }
 ```
@@ -17,6 +18,7 @@
 - response: 
 ```
 {
+    image_url: string,
     name: string,
 }
 ```

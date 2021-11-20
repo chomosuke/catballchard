@@ -16,6 +16,7 @@ pub struct DB {
 #[derive(Deserialize, Serialize)]
 pub struct Name {
     pub _id: ObjectId,
+    pub image_url: String,
     pub name: String,
 }
 
