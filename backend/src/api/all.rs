@@ -1,5 +1,4 @@
-use rocket::{get, serde::json::Json, State};
-use serde::Serialize;
+use rocket::{get, serde::{json::Json, Serialize}, State};
 use super::super::db::DB;
 use futures::stream::StreamExt;
 
