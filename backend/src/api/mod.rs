@@ -1,2 +1,3 @@
-mod hello;
-pub use hello::get_hello;
+#[path="all.rs"]
+mod _all;
+pub use _all::all;
