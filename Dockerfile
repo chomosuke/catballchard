@@ -1,9 +1,9 @@
-FROM rust:1.56.1 as backend_builder
+FROM rust:1.56.1-bullseye as backend_builder
 WORKDIR /usr/src/backend
 COPY /backend .
 RUN cargo build --release
 
-FROM ubuntu:20.04 as frontend_builder
+FROM debian:bullseye as frontend_builder
 RUN apt update && apt install -y curl git unzip xz-utils zip
 USER root
 WORKDIR /home/root
@@ -15,7 +15,7 @@ COPY /frontend ./frontend
 WORKDIR /home/root/frontend
 RUN flutter build web
 
-FROM ubuntu:20.04
+FROM debian:bullseye-slim
 
 WORKDIR /root
 COPY --from=backend_builder /usr/src/backend/target/release/backend ./backend/
