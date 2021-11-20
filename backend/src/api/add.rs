@@ -36,7 +36,7 @@ pub async fn add(db: &State<DB>, new: Json<Req>) -> Json<Res> {
         result.unwrap();
         break;
     }
-    Json(Res {
+    return Json(Res {
         id: _id.to_string(),
     })
 }

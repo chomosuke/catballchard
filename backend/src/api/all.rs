@@ -14,7 +14,7 @@ pub async fn all(db: &State<DB>) -> Json<Res> {
     while let Some(name) = names.next().await {
         ids.push(name.unwrap()._id.to_string());
     }
-    Json(Res {
+    return Json(Res {
         ids,
-    })
+    });
 }
