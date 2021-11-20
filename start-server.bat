@@ -1,2 +1,2 @@
 cd backend
-cargo run -- %*
+cargo run -- -c mongodb://localhost:27017 -p 80 %*
