@@ -1,7 +1,7 @@
 use rocket::{get, serde::json::Json, State};
 use serde::Serialize;
 use super::super::db::DB;
-use futures::stream::{StreamExt};
+use futures::stream::StreamExt;
 
 #[derive(Serialize)]
 pub struct All {
@@ -13,7 +13,7 @@ pub async fn all(db: &State<DB>) -> Option<Json<All>> {
     let mut names = db.names.find(None, None).await.ok()?;
     let mut ids = Vec::new();
     while let Some(name) = names.next().await {
-        ids.push(name.ok()?.name)
+        ids.push(name.ok()?.name);
     }
     Some(Json(All {
         ids,
