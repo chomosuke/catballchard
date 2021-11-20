@@ -3,18 +3,18 @@ use rocket::{post, serde::{json::Json, Serialize, Deserialize}, State};
 use crate::db::{DB, Name};
 
 #[derive(Deserialize)]
-pub struct New {
+pub struct Req {
     image_url: String,
     name: String,
 }
 
 #[derive(Serialize)]
-pub struct ID {
+pub struct Res {
     id: String,
 }
 
 #[post("/add", data = "<new>")]
-pub async fn add(db: &State<DB>, new: Json<New>) -> Json<ID> {
+pub async fn add(db: &State<DB>, new: Json<Req>) -> Json<Res> {
     let mut _id = ObjectId::new();
     loop {
         let result = db.names.insert_one(Name {
@@ -36,7 +36,7 @@ pub async fn add(db: &State<DB>, new: Json<New>) -> Json<ID> {
         result.unwrap();
         break;
     }
-    Json(ID {
+    Json(Res {
         id: _id.to_string(),
     })
 }
