@@ -1,4 +1,11 @@
-use mongodb::{bson::doc, options::ClientOptions, Client, Database, Collection};
+use mongodb::{
+    bson::doc,
+    bson::oid::ObjectId,
+    options::ClientOptions,
+    Client,
+    Database,
+    Collection
+};
 use serde::Deserialize;
 
 pub struct DB {
@@ -8,6 +15,7 @@ pub struct DB {
 
 #[derive(Deserialize)]
 pub struct Name {
+    pub _id: ObjectId,
     pub name: String,
 }
 

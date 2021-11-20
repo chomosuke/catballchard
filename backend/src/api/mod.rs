@@ -1,3 +1,3 @@
 #[path="all.rs"]
-mod _all;
-pub use _all::all;
+mod all_;
+pub use all_::all;
