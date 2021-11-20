@@ -102,9 +102,11 @@ checksum = "cdb031dd78e28731d87d56cc8ffef4a8f36ca26c38fe2de700543e627f8a464a"
 name = "backend"
 version = "0.1.0"
 dependencies = [
+ "futures",
  "mongodb",
  "rocket",
  "rocket_cors",
+ "serde",
  "structopt",
 ]
 
@@ -1306,6 +1308,7 @@ dependencies = [
  "rocket_codegen",
  "rocket_http",
  "serde",
+ "serde_json",
  "state",
  "tempfile",
  "time 0.2.27",
