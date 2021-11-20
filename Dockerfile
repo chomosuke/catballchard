@@ -8,9 +8,12 @@ RUN apt update && apt install -y curl git unzip xz-utils zip
 USER root
 WORKDIR /home/root
 
-RUN git clone https://github.com/flutter/flutter.git -b stable
+RUN git clone https://github.com/flutter/flutter.git
+WORKDIR /home/root/flutter
+RUN git checkout 9103b373eb2197208b0b69614bffc79097195ba5
+WORKDIR /home/root
 ENV PATH "$PATH:/home/root/flutter/bin"
-RUN flutter doctor
+RUN flutter precache --web
 COPY /frontend ./frontend
 WORKDIR /home/root/frontend
 RUN flutter build web
