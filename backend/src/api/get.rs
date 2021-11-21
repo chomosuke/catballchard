@@ -10,12 +10,11 @@ pub struct Res {
 
 #[get("/<id>")]
 pub async fn get(db: &State<DB>, id: &str) -> Option<Json<Res>> {
-    let _id: ObjectId;
-    if let Ok(id) = ObjectId::parse_str(id) {
-        _id = id;
+    let _id = if let Ok(id) = ObjectId::parse_str(id) {
+        id
     } else {
         return None;
-    }
+    };
     let name = db.names.find_one(doc! { "_id": _id }, None).await.unwrap()?;
     return Some(Json(Res {
         image_url: name.image_url,
