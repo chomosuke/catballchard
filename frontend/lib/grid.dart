@@ -11,6 +11,7 @@ class Grid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.extent(
+      padding: const EdgeInsets.all(30),
       maxCrossAxisExtent: 200,
       childAspectRatio: 9 / 10,
       crossAxisSpacing: 30,
