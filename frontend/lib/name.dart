@@ -9,6 +9,8 @@ class Name extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(_name.id);
+    return Column(
+      children: [Image.network(_name.imageUrl), Text(_name.name)],
+    );
   }
 }

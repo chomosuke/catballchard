@@ -11,7 +11,10 @@ class Grid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.extent(
-      maxCrossAxisExtent: 100,
+      maxCrossAxisExtent: 200,
+      childAspectRatio: 9 / 10,
+      crossAxisSpacing: 30,
+      mainAxisSpacing: 30,
       children: _nameFutures
           .map<Widget>((name) => FutureBuilder<lifecycle.Name>(
                 future: name,
