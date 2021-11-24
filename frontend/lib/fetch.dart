@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
@@ -9,7 +8,8 @@ final Uri apiUri = baseUri.resolve('api/');
 
 class All {
   final List<String> ids;
-  All.fromJson(Map<String, dynamic> json) : ids = json['ids'];
+  All.fromJson(Map<String, dynamic> json)
+      : ids = List<String>.from(json['ids']);
 }
 
 Future<All> getAll() async {
@@ -37,15 +37,16 @@ class NewName {
   NewName(this.imageUrl, this.name);
 }
 
-Future<void> postAdd(NewName name) async {
-  await http.post(
+Future<String> postAdd(NewName newName) async {
+  final response = await http.post(
     apiUri.resolve('add'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, String>{
-      'image_url': name.imageUrl,
-      'name': name.name,
+      'image_url': newName.imageUrl,
+      'name': newName.name,
     }),
   );
+  return jsonDecode(response.body)['id'];
 }
