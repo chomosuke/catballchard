@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "A place where you can upload images with some text (mostly my combine name with an image).",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
