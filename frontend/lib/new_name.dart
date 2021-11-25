@@ -50,9 +50,10 @@ class _NewNameState extends State<NewName> {
       }
       List<int> bytes = result.files.single.bytes!;
       String mimeType = lookupMimeType(result.files.single.name)!;
-      img.Image image = img.decodeImage(bytes)!;
-      const sizeLimit = 500;
-      if (max(image.width, image.height) > 500) {
+      if (bytes.length > 100000) {
+        // 100 kB
+        img.Image image = img.decodeImage(bytes)!;
+        const sizeLimit = 500;
         if (image.width > image.height) {
           image = img.copyResize(image, width: sizeLimit);
         } else {
