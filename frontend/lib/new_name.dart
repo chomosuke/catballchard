@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:mime/mime.dart';
+import 'package:image/image.dart' as img;
 import 'package:provider/provider.dart';
 import 'lifecycle.dart' as lifecycle;
 
@@ -46,10 +46,15 @@ class _NewNameState extends State<NewName> {
         return null;
       }
       final bytes = result.files.single.bytes!;
-      String imageUrl = 'data:' +
-          lookupMimeType(result.files.single.name)! +
-          ';base64,' +
-          base64UrlEncode(bytes);
+      img.Image image = img.decodeImage(bytes)!;
+      const sizeLimit = 500;
+      if (image.width > image.height) {
+        image = img.copyResize(image, width: sizeLimit);
+      } else {
+        image = img.copyResize(image, height: sizeLimit);
+      }
+      String imageUrl =
+          'data:image/jpeg;base64,' + base64UrlEncode(img.encodeJpg(image));
       setState(() {
         _content = _NewNameContent(imageUrl, '');
       });
