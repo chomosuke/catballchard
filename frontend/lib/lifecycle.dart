@@ -1,38 +1,41 @@
+import 'package:flutter/foundation.dart';
 import 'fetch.dart' hide All, Name;
 import 'fetch.dart' as fetch show Name;
 export 'fetch.dart' show NewName;
 
-class All {
-  Future<List<Future<Name>>> _all;
-  final void Function(void Function() fn) _setState;
-  All(this._setState)
-      : _all = (() async {
-          final List<String> ids = (await getAll()).ids;
-          return ids.map((id) => Name.get(id)).toList();
-        })();
+class All extends ChangeNotifier {
+  late Future<List<Future<Name>>> _all;
+  All() {
+    _all = (() async {
+      final List<String> ids = (await getAll()).ids;
+      return ids.map((id) => Name.get(id)).toList();
+    })();
+  }
 
   void add(NewName newName) {
     final Future<Name> name = Name.post(newName);
-    _setState(() {
-      _all = (() async {
-        final List<Future<Name>> all = await _all;
-        all.add(name);
-        return all;
-      })();
-    });
+    _all = (() async {
+      // get the list from future
+      final List<Future<Name>> all = await _all;
+      // add to the list
+      all.add(name);
+      // return the list which will be wrapped in a future because async.
+      return all;
+    })();
+    notifyListeners();
   }
 
-  Future<List<Future<Name>>> get all {
-    return _all;
-  }
+  Future<List<Future<Name>>> get all => _all;
 }
 
-class Name {
-  String id;
-  String imageUrl;
-  String name;
+class Name extends ChangeNotifier {
+  String _id;
+  String _imageUrl;
+  String get imageUrl => _imageUrl;
+  String _name;
+  String get name => _name;
 
-  Name._plain(this.id, this.imageUrl, this.name);
+  Name._plain(this._id, this._imageUrl, this._name);
 
   static Future<Name> get(String id) async {
     final fetch.Name nameData = await getName(id);

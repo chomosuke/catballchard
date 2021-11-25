@@ -1,5 +1,5 @@
 name: frontend
-description: A new Flutter project.
+description: A place where you can upload images with some text (mostly my combine name with an image).
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -30,11 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: 0.13.4
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  provider: 6.0.1
 
 dev_dependencies:
   flutter_test:
