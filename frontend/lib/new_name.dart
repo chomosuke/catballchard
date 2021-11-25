@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:mime/mime.dart';
 import 'package:provider/provider.dart';
 import 'lifecycle.dart' as lifecycle;
 
@@ -10,7 +13,7 @@ class NewName extends StatefulWidget {
 }
 
 class _NewNameContent {
-  String? imageUrl;
+  String imageUrl;
   String name;
   _NewNameContent(this.imageUrl, this.name);
 }
@@ -20,9 +23,9 @@ class _NewNameState extends State<NewName> {
 
   @override
   Widget build(BuildContext context) {
-    void onConfirm() {
+    void onConfirm() async {
       Provider.of<lifecycle.All>(context, listen: false)
-          .add(lifecycle.NewName(_content!.imageUrl ?? '', _content!.name));
+          .add(lifecycle.NewName(await _content!.imageUrl, _content!.name));
       setState(() {
         _content = null;
       });
@@ -34,9 +37,21 @@ class _NewNameState extends State<NewName> {
       });
     }
 
-    void onAdd() {
+    void onAdd() async {
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(type: FileType.image);
+
+      if (result == null) {
+        // User canceled the picker
+        return null;
+      }
+      final bytes = result.files.single.bytes!;
+      String imageUrl = 'data:' +
+          lookupMimeType(result.files.single.name)! +
+          ';base64,' +
+          base64UrlEncode(bytes);
       setState(() {
-        _content = _NewNameContent('', '');
+        _content = _NewNameContent(imageUrl, '');
       });
     }
 
