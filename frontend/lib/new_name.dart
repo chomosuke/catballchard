@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:math';
+import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
+import 'package:mime/mime.dart';
 import 'package:provider/provider.dart';
 import 'lifecycle.dart' as lifecycle;
 
@@ -45,16 +48,21 @@ class _NewNameState extends State<NewName> {
         // User canceled the picker
         return null;
       }
-      final bytes = result.files.single.bytes!;
+      List<int> bytes = result.files.single.bytes!;
+      String mimeType = lookupMimeType(result.files.single.name)!;
       img.Image image = img.decodeImage(bytes)!;
       const sizeLimit = 500;
-      if (image.width > image.height) {
-        image = img.copyResize(image, width: sizeLimit);
-      } else {
-        image = img.copyResize(image, height: sizeLimit);
+      if (max(image.width, image.height) > 500) {
+        if (image.width > image.height) {
+          image = img.copyResize(image, width: sizeLimit);
+        } else {
+          image = img.copyResize(image, height: sizeLimit);
+        }
+        bytes = img.encodeJpg(image);
+        mimeType = 'image/jpeg';
       }
       String imageUrl =
-          'data:image/jpeg;base64,' + base64UrlEncode(img.encodeJpg(image));
+          'data:' + mimeType + ';base64,' + base64UrlEncode(bytes);
       setState(() {
         _content = _NewNameContent(imageUrl, '');
       });
