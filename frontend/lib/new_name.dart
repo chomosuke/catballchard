@@ -71,11 +71,10 @@ class _NewNameState extends State<NewName> {
             )
           : Column(
               children: [
-                TextField(
-                  decoration: const InputDecoration(labelText: 'imageUrl'),
-                  onChanged: (value) {
-                    _content!.imageUrl = value;
-                  },
+                Expanded(
+                  child: Container(
+                      alignment: Alignment.topCenter,
+                      child: Image.network(_content!.imageUrl)),
                 ),
                 TextField(
                   decoration: const InputDecoration(labelText: 'Combo Name'),
@@ -89,7 +88,7 @@ class _NewNameState extends State<NewName> {
                     OutlinedButton(
                         onPressed: onCancel, child: const Text('Cancel')),
                     ElevatedButton(
-                        onPressed: onConfirm, child: const Text('Confirm'))
+                        onPressed: onConfirm, child: const Text('Confirm')),
                   ],
                 )
               ],
