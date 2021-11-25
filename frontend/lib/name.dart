@@ -49,7 +49,8 @@ class _NameState extends State<Name> {
             ),
             borderRadius: const BorderRadius.all(Radius.circular(20))),
         child: Column(
-          children: [Image.network(_name.imageUrl), Text(_name.name)],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [Image.network(_name.imageUrl), SelectableText(_name.name)],
         ));
   }
 }
