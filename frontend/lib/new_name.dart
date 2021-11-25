@@ -20,7 +20,26 @@ class _NewNameState extends State<NewName> {
 
   @override
   Widget build(BuildContext context) {
-    final add = Provider.of<lifecycle.All>(context, listen: false).add;
+    void onConfirm() {
+      Provider.of<lifecycle.All>(context, listen: false)
+          .add(lifecycle.NewName(_content!.imageUrl ?? '', _content!.name));
+      setState(() {
+        _content = null;
+      });
+    }
+
+    void onCancel() {
+      setState(() {
+        _content = null;
+      });
+    }
+
+    void onAdd() {
+      setState(() {
+        _content = _NewNameContent('', '');
+      });
+    }
+
     return Container(
       padding: _content == null ? null : const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -31,11 +50,7 @@ class _NewNameState extends State<NewName> {
           borderRadius: const BorderRadius.all(Radius.circular(20))),
       child: _content == null
           ? IconButton(
-              onPressed: () {
-                setState(() {
-                  _content = _NewNameContent('', '');
-                });
-              },
+              onPressed: onAdd,
               tooltip: 'Add new ComboName',
               icon: const Icon(Icons.add, size: 100),
             )
@@ -57,22 +72,9 @@ class _NewNameState extends State<NewName> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     OutlinedButton(
-                        onPressed: () {
-                          setState(() {
-                            _content = null;
-                          });
-                        },
-                        child: const Text('Cancel')),
+                        onPressed: onCancel, child: const Text('Cancel')),
                     ElevatedButton(
-                        onPressed: () {
-                          Provider.of<lifecycle.All>(context, listen: false)
-                              .add(lifecycle.NewName(
-                                  _content!.imageUrl ?? '', _content!.name));
-                          setState(() {
-                            _content = null;
-                          });
-                        },
-                        child: const Text('Confirm'))
+                        onPressed: onConfirm, child: const Text('Confirm'))
                   ],
                 )
               ],
