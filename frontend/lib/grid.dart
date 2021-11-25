@@ -31,7 +31,8 @@ class Grid extends StatelessWidget {
     children.add(const NewName());
     return GridView.extent(
       padding: const EdgeInsets.all(30),
-      maxCrossAxisExtent: 250,
+      maxCrossAxisExtent: 182 * 2,
+      // ^ should be double of the total width of buttons + all paddings
       childAspectRatio: 9 / 10,
       crossAxisSpacing: 30,
       mainAxisSpacing: 30,
