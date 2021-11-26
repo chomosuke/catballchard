@@ -1,5 +1,5 @@
 CALL CD frontend
-CALL flutter build web
+CALL flutter build web --web-renderer canvaskit
 CALL CD ..
 CALL RD /S /Q "web_build"
 CALL MD "web_build"

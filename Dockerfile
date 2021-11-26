@@ -16,7 +16,7 @@ ENV PATH "$PATH:/home/root/flutter/bin"
 RUN flutter precache --web
 COPY /frontend ./frontend
 WORKDIR /home/root/frontend
-RUN flutter build web
+RUN flutter build web --web-renderer canvaskit
 
 FROM debian:bullseye-slim
 
