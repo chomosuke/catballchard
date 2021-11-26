@@ -8,8 +8,8 @@ Future<String> imageToDataUrl(FilePickerResult result) async {
   List<int> bytes = result.files.single.bytes!;
   String mimeType = lookupMimeType(result.files.single.name)!;
   // 100 kB
-  const imgSizeLimit = 1024;
-  const sizeLimit = 500000;
+  const imgSizeLimit = 512;
+  const sizeLimit = 50000;
   await JsIsolatedWorker().importScripts(['imageToDataUrl.js']);
   return await JsIsolatedWorker().run(
       functionName: 'imageToDataUrl',
