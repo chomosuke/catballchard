@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:frontend/future_builder.dart';
 import 'package:provider/provider.dart';
 import 'fetch.dart' show baseUri;
 import 'grid.dart';
@@ -28,19 +29,12 @@ class App extends StatelessWidget {
           leadingWidth: 56 / 210 * 240,
         ),
         body: Consumer<All>(
-            builder: (context, all, child) => FutureBuilder<List<Future<Name>>>(
-                  future: all.all,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Grid(
-                        nameFutures: snapshot.data!,
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
-                    return const CircularProgressIndicator();
-                  },
-                )),
+            builder: (context, all, child) =>
+                MFutureBuilder<List<Future<Name>>>(
+                    future: all.all,
+                    builder: (context, data) => Grid(
+                          nameFutures: data,
+                        ))),
       ),
     );
   }

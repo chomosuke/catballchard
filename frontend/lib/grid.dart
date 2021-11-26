@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/future_builder.dart';
 import 'new_name.dart';
 import 'name.dart';
 import 'lifecycle.dart' as lifecycle;
@@ -14,18 +15,11 @@ class Grid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final children = _nameFutures
-        .map<Widget>((name) => FutureBuilder<lifecycle.Name>(
+        .map<Widget>((name) => MFutureBuilder<lifecycle.Name>(
               future: name,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Name(
-                    name: snapshot.data!,
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return const CircularProgressIndicator();
-              },
+              builder: (context, data) => Name(
+                name: data,
+              ),
             ))
         .toList();
     children.add(const NewName());

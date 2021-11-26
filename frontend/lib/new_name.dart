@@ -1,10 +1,7 @@
-import 'dart:convert';
-import 'dart:math';
-import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image/image.dart' as img;
-import 'package:mime/mime.dart';
+import 'package:frontend/future_builder.dart';
+import 'package:frontend/image_to_dataurl.dart';
 import 'package:provider/provider.dart';
 import 'lifecycle.dart' as lifecycle;
 
@@ -16,7 +13,7 @@ class NewName extends StatefulWidget {
 }
 
 class _NewNameContent {
-  String imageUrl;
+  Future<String> imageUrl;
   String name;
   _NewNameContent(this.imageUrl, this.name);
 }
@@ -48,24 +45,8 @@ class _NewNameState extends State<NewName> {
         // User canceled the picker
         return null;
       }
-      List<int> bytes = result.files.single.bytes!;
-      String mimeType = lookupMimeType(result.files.single.name)!;
-      if (bytes.length > 100000) {
-        // 100 kB
-        img.Image image = img.decodeImage(bytes)!;
-        const sizeLimit = 500;
-        if (image.width > image.height) {
-          image = img.copyResize(image, width: sizeLimit);
-        } else {
-          image = img.copyResize(image, height: sizeLimit);
-        }
-        bytes = img.encodeJpg(image);
-        mimeType = 'image/jpeg';
-      }
-      String imageUrl =
-          'data:' + mimeType + ';base64,' + base64UrlEncode(bytes);
       setState(() {
-        _content = _NewNameContent(imageUrl, '');
+        _content = _NewNameContent(imageToDataUrl(result), '');
       });
     }
 
@@ -87,8 +68,11 @@ class _NewNameState extends State<NewName> {
               children: [
                 Expanded(
                   child: Container(
-                      alignment: Alignment.topCenter,
-                      child: Image.network(_content!.imageUrl)),
+                    alignment: Alignment.topCenter,
+                    child: MFutureBuilder<String>(
+                        future: _content!.imageUrl,
+                        builder: (context, data) => Image.network(data)),
+                  ),
                 ),
                 TextField(
                   decoration: const InputDecoration(labelText: 'Combo Name'),
