@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:mime/mime.dart';
+import 'package:frontend/future_builder.dart';
+import 'package:frontend/image_to_data_url.dart';
 import 'package:provider/provider.dart';
 import 'lifecycle.dart' as lifecycle;
 
@@ -13,7 +13,7 @@ class NewName extends StatefulWidget {
 }
 
 class _NewNameContent {
-  String imageUrl;
+  Future<String> imageUrl;
   String name;
   _NewNameContent(this.imageUrl, this.name);
 }
@@ -45,13 +45,8 @@ class _NewNameState extends State<NewName> {
         // User canceled the picker
         return null;
       }
-      final bytes = result.files.single.bytes!;
-      String imageUrl = 'data:' +
-          lookupMimeType(result.files.single.name)! +
-          ';base64,' +
-          base64UrlEncode(bytes);
       setState(() {
-        _content = _NewNameContent(imageUrl, '');
+        _content = _NewNameContent(imageToDataUrl(result), '');
       });
     }
 
@@ -73,8 +68,11 @@ class _NewNameState extends State<NewName> {
               children: [
                 Expanded(
                   child: Container(
-                      alignment: Alignment.topCenter,
-                      child: Image.network(_content!.imageUrl)),
+                    alignment: Alignment.topCenter,
+                    child: MFutureBuilder<String>(
+                        future: _content!.imageUrl,
+                        builder: (context, data) => Image.network(data)),
+                  ),
                 ),
                 TextField(
                   decoration: const InputDecoration(labelText: 'Combo Name'),
