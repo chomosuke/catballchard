@@ -1,0 +1,1 @@
+self.Jimp = require('jimp');

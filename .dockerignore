@@ -1,3 +1,4 @@
 /backend/target/
 /frontend/build/
 /web_build/
+/web_worker/

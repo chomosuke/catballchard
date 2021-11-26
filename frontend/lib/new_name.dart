@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/future_builder.dart';
-import 'package:frontend/image_to_dataurl.dart';
+import 'package:frontend/image_to_data_url.dart';
 import 'package:provider/provider.dart';
 import 'lifecycle.dart' as lifecycle;
 
