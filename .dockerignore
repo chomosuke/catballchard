@@ -1,4 +1,4 @@
 /backend/target/
 /frontend/build/
+/frontend/web_worker/
 /web_build/
-/web_worker/
