@@ -52,6 +52,7 @@ class All extends ChangeNotifier {
 
 class Name extends ChangeNotifier {
   String _id;
+  String get id => _id;
   String _imageUrl;
   String get imageUrl => _imageUrl;
   String _name;

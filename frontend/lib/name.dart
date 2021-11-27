@@ -12,31 +12,19 @@ class Name extends StatefulWidget {
   State<StatefulWidget> createState() => _NameState();
 }
 
-class _NameData {
-  final String imageUrl;
-  final String name;
-  _NameData(this.imageUrl, this.name);
-}
-
 class _NameState extends State<Name> {
-  late _NameData _name;
-  void resetName() {
-    setState(() {
-      _name = _NameData(widget._name.imageUrl, widget._name.name);
-    });
-  }
+  void markNeedsBuild() => setState(() {});
 
   @override
   void initState() {
     super.initState();
-    resetName();
-    widget._name.addListener(resetName);
+    widget._name.addListener(markNeedsBuild);
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget._name.removeListener(resetName);
+    widget._name.removeListener(markNeedsBuild);
   }
 
   @override
@@ -63,7 +51,7 @@ class _NameState extends State<Name> {
               children: [
                 Container(
                   alignment: Alignment.topCenter,
-                  child: Image.network(_name.imageUrl),
+                  child: Image.network(widget._name.imageUrl),
                 ),
                 Container(
                   decoration: const BoxDecoration(
@@ -80,7 +68,7 @@ class _NameState extends State<Name> {
               ],
             ),
           ),
-          SelectableText(_name.name)
+          SelectableText(widget._name.name)
         ],
       ),
     );
