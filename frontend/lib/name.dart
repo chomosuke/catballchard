@@ -41,22 +41,26 @@ class _NameState extends State<Name> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black,
-              width: 2,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.black,
+          width: 2,
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Container(
+              alignment: Alignment.topCenter,
+              child: Image.network(_name.imageUrl),
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(20))),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-                child: Container(
-                    alignment: Alignment.topCenter,
-                    child: Image.network(_name.imageUrl))),
-            SelectableText(_name.name)
-          ],
-        ));
+          ),
+          SelectableText(_name.name)
+        ],
+      ),
+    );
   }
 }
