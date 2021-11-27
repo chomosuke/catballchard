@@ -14,6 +14,11 @@
 }
 ```
 
+## DELETE `/<id>`
+- request: None
+- response: None
+204 if not found, 200 if ok.
+
 ## GET `/<id>`
 - request: None
 - response:
