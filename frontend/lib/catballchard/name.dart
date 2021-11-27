@@ -80,8 +80,11 @@ class _NameState extends State<Name> {
               Image.network(widget._name.imageUrl),
               SelectableText(
                 widget._name.name,
-                style: const TextStyle(fontSize: 32),
-              )
+                style: const TextStyle(
+                  fontSize: 32,
+                  backgroundColor: Color.fromARGB(150, 150, 150, 150),
+                ),
+              ),
             ],
           ),
         );
