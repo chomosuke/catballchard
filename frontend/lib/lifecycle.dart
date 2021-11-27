@@ -25,6 +25,28 @@ class All extends ChangeNotifier {
     notifyListeners();
   }
 
+  // name that's not in list is no-op to the list _all,
+  // will still call delete on name
+  void delete(Name name) {
+    _all = (() async {
+      // get the list from future
+      final List<Future<Name>> all = await _all;
+      var i = 0;
+      while (i < all.length) {
+        if (await all[i] == name) {
+          break;
+        }
+        i++;
+      }
+      name.delete();
+      if (i < all.length) {
+        all.removeAt(i);
+      }
+      return all;
+    })();
+    notifyListeners();
+  }
+
   Future<List<Future<Name>>> get all => _all;
 }
 
@@ -45,5 +67,9 @@ class Name extends ChangeNotifier {
   static Future<Name> post(NewName newName) async {
     final String id = await postAdd(newName);
     return Name._plain(id, newName.imageUrl, newName.name);
+  }
+
+  Future<void> delete() async {
+    await deleteName(_id);
   }
 }

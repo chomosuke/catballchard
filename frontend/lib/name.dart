@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'lifecycle.dart' as lifecycle;
 
 class Name extends StatefulWidget {
@@ -40,23 +41,48 @@ class _NameState extends State<Name> {
 
   @override
   Widget build(BuildContext context) {
+    void onDelete() {
+      Provider.of<lifecycle.All>(context, listen: false).delete(widget._name);
+    }
+
     return Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black,
-              width: 2,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.black,
+          width: 2,
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Stack(
+              alignment: Alignment.topLeft,
+              children: [
+                Container(
+                  alignment: Alignment.topCenter,
+                  child: Image.network(_name.imageUrl),
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(150, 150, 150, 150),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: IconButton(
+                    onPressed: onDelete,
+                    padding: const EdgeInsets.all(0),
+                    iconSize: 32,
+                    icon: const Icon(Icons.delete_forever_outlined),
+                  ),
+                ),
+              ],
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(20))),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-                child: Container(
-                    alignment: Alignment.topCenter,
-                    child: Image.network(_name.imageUrl))),
-            SelectableText(_name.name)
-          ],
-        ));
+          ),
+          SelectableText(_name.name)
+        ],
+      ),
+    );
   }
 }
