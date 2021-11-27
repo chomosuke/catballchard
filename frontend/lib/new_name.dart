@@ -4,7 +4,6 @@ import 'package:frontend/future_builder.dart';
 import 'package:frontend/image_to_data_url.dart';
 import 'package:provider/provider.dart';
 import 'lifecycle.dart' as lifecycle;
-import 'package:mime/mime.dart';
 
 class NewName extends StatefulWidget {
   const NewName({Key? key}) : super(key: key);
@@ -46,15 +45,8 @@ class _NewNameState extends State<NewName> {
         // User canceled the picker
         return null;
       }
-
-      List<int> bytes = result.files.single.bytes!;
-      String mimeType = lookupMimeType(result.files.single.name)!;
-      const imgSizeLimit = 512;
-      const sizeLimit = 50000;
-
       setState(() {
-        _content = _NewNameContent(
-            imageToDataUrl(bytes, mimeType, imgSizeLimit, sizeLimit), '');
+        _content = _NewNameContent(imageToDataUrl(result), '');
       });
     }
 
