@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../card_container.dart';
 import 'package:provider/provider.dart';
 import '../lifecycle.dart' as lifecycle;
 
@@ -33,15 +34,8 @@ class _NameState extends State<Name> {
       Provider.of<lifecycle.All>(context, listen: false).delete(widget._name);
     }
 
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black,
-          width: 2,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-      ),
+    return CardContainer(
+      padding: 10,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

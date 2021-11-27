@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/card_container.dart';
 import 'package:frontend/future_builder.dart';
 import 'package:frontend/image_to_data_url.dart';
 import 'package:provider/provider.dart';
@@ -66,14 +67,8 @@ class _NewNameState extends State<NewName> {
       });
     }
 
-    return Container(
-      padding: _content == null ? null : const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black,
-            width: 2,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(20))),
+    return CardContainer(
+      padding: _content == null ? 0 : 10,
       child: _content == null
           ? IconButton(
               onPressed: onAdd,
