@@ -21,6 +21,7 @@ class _NewNameContent {
 
 class _NewNameState extends State<NewName> {
   _NewNameContent? _content;
+  bool _canConfirm = false;
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +54,15 @@ class _NewNameState extends State<NewName> {
       const sizeLimit = 50000;
 
       setState(() {
-        _content = _NewNameContent(
-            imageToDataUrl(bytes, mimeType, sizeLimit, imgSizeLimit), '');
+        Future<String> imageUrl = (() async {
+          String imageUrl =
+              await imageToDataUrl(bytes, mimeType, sizeLimit, imgSizeLimit);
+          setState(() {
+            _canConfirm = true;
+          });
+          return imageUrl;
+        })();
+        _content = _NewNameContent(imageUrl, '');
       });
     }
 
@@ -92,9 +100,13 @@ class _NewNameState extends State<NewName> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     OutlinedButton(
-                        onPressed: onCancel, child: const Text('Cancel')),
+                      onPressed: onCancel,
+                      child: const Text('Cancel'),
+                    ),
                     ElevatedButton(
-                        onPressed: onConfirm, child: const Text('Confirm')),
+                      onPressed: _canConfirm ? onConfirm : null,
+                      child: const Text('Confirm'),
+                    ),
                   ],
                 )
               ],
