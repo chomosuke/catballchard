@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:frontend/catballchard/catballchard.dart';
 import 'package:frontend/future_builder.dart';
 import 'package:provider/provider.dart';
 import 'fetch.dart' show baseUri;
-import 'grid.dart';
+import 'catballchard/grid.dart';
 import 'lifecycle.dart';
 
 void main() {
@@ -28,13 +29,7 @@ class App extends StatelessWidget {
           title: const Text('CatBallChard'),
           leadingWidth: 56 / 210 * 240,
         ),
-        body: Consumer<All>(
-            builder: (context, all, child) =>
-                MFutureBuilder<List<Future<Name>>>(
-                    future: all.all,
-                    builder: (context, data) => Grid(
-                          nameFutures: data,
-                        ))),
+        body: const Catballchard(),
       ),
     );
   }

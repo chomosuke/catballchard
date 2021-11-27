@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/future_builder.dart';
 import 'new_name.dart';
 import 'name.dart';
-import 'lifecycle.dart' as lifecycle;
+import '../lifecycle.dart' as lifecycle;
 
 class Grid extends StatelessWidget {
   final List<Future<lifecycle.Name>> _nameFutures;

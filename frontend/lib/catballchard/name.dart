@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'lifecycle.dart' as lifecycle;
+import '../lifecycle.dart' as lifecycle;
 
 class Name extends StatefulWidget {
   final lifecycle.Name _name;
