@@ -14,6 +14,8 @@ pub struct Res {
 }
 
 #[post("/add", data = "<new>")]
+// will automatically 422 if post body doesn't have the right type / parameter etc.
+// will 400 if body isn't a good json.
 pub async fn add(db: &State<DB>, new: Json<Req>) -> Json<Res> {
     let id = loop {
         let _id = ObjectId::new();

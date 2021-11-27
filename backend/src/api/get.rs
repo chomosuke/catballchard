@@ -13,8 +13,11 @@ pub async fn get(db: &State<DB>, id: &str) -> Option<Json<Res>> {
     let _id = if let Ok(id) = ObjectId::parse_str(id) {
         id
     } else {
-        return None;
+        return None; // this will return 404
     };
+
+    // result will be unwrapped, so error will panic.
+    // but option will be forwarded, so if not found -> None 404
     let name = db.names.find_one(doc! { "_id": _id }, None).await.unwrap()?;
     return Some(Json(Res {
         image_url: name.image_url,

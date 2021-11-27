@@ -7,6 +7,7 @@
 }
 ```
 - response:
+422 if request does not fit schema, 400 if body isn't valid json, 200 if ok.
 ```
 {
     id: string,
@@ -15,7 +16,8 @@
 
 ## GET `/<id>`
 - request: None
-- response: 
+- response:
+404 if not found, 200 if ok.
 ```
 {
     image_url: string,
@@ -26,6 +28,7 @@
 ## GET `/all`
 - request: None
 - response:
+200 if ok.
 ```
 {
     ids: string[],
