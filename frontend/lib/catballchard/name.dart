@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/flex_with_main_child.dart';
 import '../card_container.dart';
 import 'package:provider/provider.dart';
 import '../lifecycle.dart' as lifecycle;
@@ -82,7 +83,7 @@ class _NameState extends State<Name> {
                 Container(
                   margin: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(150, 150, 150, 150),
+                    color: Color.fromARGB(64, 255, 255, 255),
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
                   child: IconButton(
@@ -99,7 +100,7 @@ class _NameState extends State<Name> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(left: 20, right: 20),
+            margin: const EdgeInsets.fromLTRB(15, 5, 15, 10),
             child: SelectableText(
               widget._name.name,
               style: const TextStyle(fontSize: 20),
@@ -113,20 +114,25 @@ class _NameState extends State<Name> {
       onTap: () {
         Navigator.of(context).pop();
       },
-      child: Column(
+      child: FlexWithMainChild(
+        direction: Axis.vertical,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(
-            child: Image.network(
-              widget._name.imageUrl,
-              filterQuality: FilterQuality.medium,
-            ),
+        mainChild: Flexible(
+          child: Image.network(
+            widget._name.imageUrl,
+            filterQuality: FilterQuality.medium,
           ),
-          SelectableText(
-            widget._name.name,
-            style: const TextStyle(
-              fontSize: 32,
-              backgroundColor: Color.fromARGB(150, 150, 150, 150),
+        ),
+        childrenAfter: [
+          Container(
+            alignment: Alignment.center,
+            width: double.infinity,
+            color: const Color.fromARGB(64, 255, 255, 255),
+            child: SelectableText(
+              widget._name.name,
+              style: const TextStyle(
+                fontSize: 32,
+              ),
             ),
           ),
         ],
