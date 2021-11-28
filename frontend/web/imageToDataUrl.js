@@ -1,4 +1,4 @@
-importScripts('jimp.js');
+importScripts('workerLib.js');
 var Jimp = self.Jimp;
 
 function base64EncodeURL(bytes) {
