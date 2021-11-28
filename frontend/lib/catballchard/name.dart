@@ -70,23 +70,30 @@ class _NameState extends State<Name> {
       ),
     );
 
+    final dialog = GestureDetector(
+      onTap: () {
+        Navigator.of(context).pop();
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(child: Image.network(widget._name.imageUrl)),
+          SelectableText(
+            widget._name.name,
+            style: const TextStyle(
+              fontSize: 32,
+              backgroundColor: Color.fromARGB(150, 150, 150, 150),
+            ),
+          ),
+        ],
+      ),
+    );
+
     return InkWell(
       onTap: () {
         showDialog(
           context: context,
-          builder: (context) => Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(child: Image.network(widget._name.imageUrl)),
-              SelectableText(
-                widget._name.name,
-                style: const TextStyle(
-                  fontSize: 32,
-                  backgroundColor: Color.fromARGB(150, 150, 150, 150),
-                ),
-              ),
-            ],
-          ),
+          builder: (context) => dialog,
         );
       },
       child: card,
