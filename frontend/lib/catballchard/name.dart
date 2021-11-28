@@ -77,7 +77,7 @@ class _NameState extends State<Name> {
           builder: (context) => Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.network(widget._name.imageUrl),
+              Flexible(child: Image.network(widget._name.imageUrl)),
               SelectableText(
                 widget._name.name,
                 style: const TextStyle(
