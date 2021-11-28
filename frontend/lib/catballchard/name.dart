@@ -48,6 +48,7 @@ class _NameState extends State<Name> {
                   child: Image.network(widget._name.imageUrl),
                 ),
                 Container(
+                  margin: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(150, 150, 150, 150),
                     borderRadius: BorderRadius.all(Radius.circular(10)),
