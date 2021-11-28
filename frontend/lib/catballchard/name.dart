@@ -66,9 +66,12 @@ class _NameState extends State<Name> {
               ],
             ),
           ),
-          SelectableText(
-            widget._name.name,
-            style: const TextStyle(fontSize: 20),
+          Container(
+            margin: const EdgeInsets.only(left: 20, right: 20),
+            child: SelectableText(
+              widget._name.name,
+              style: const TextStyle(fontSize: 20),
+            ),
           )
         ],
       ),

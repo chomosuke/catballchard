@@ -79,8 +79,12 @@ class _NewNameState extends State<NewName> {
                   child: Container(
                     alignment: Alignment.topCenter,
                     child: MFutureBuilder<String>(
-                        future: _content!.imageUrl,
-                        builder: (context, data) => Image.network(data)),
+                      future: _content!.imageUrl,
+                      builder: (context, data) => Image.network(
+                        data,
+                        filterQuality: FilterQuality.medium,
+                      ),
+                    ),
                   ),
                 ),
                 TextField(
