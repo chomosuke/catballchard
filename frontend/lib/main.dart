@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:frontend/catballchard/catballchard.dart';
-import 'package:frontend/future_builder.dart';
 import 'package:provider/provider.dart';
 import 'fetch.dart' show baseUri;
-import 'catballchard/grid.dart';
 import 'lifecycle.dart';
 
 void main() {
