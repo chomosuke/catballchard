@@ -12,20 +12,24 @@ function toUrl(str) {
 }
 
 async function imageToDataUrl(params) {
-    // [bytes, mimeType, sizeLimit, imgSizeLimit]
+    // [bytes, mimeType, sizeLimit]
     var bytes = params[0];
     var mimeType = params[1];
     var sizeLimit = params[2];
-    var imgSizeLimit = params[3];
+
     if (bytes.byteLength > sizeLimit) {
-        var image = await Jimp.read(bytes.buffer);
-        if (image.getWidth() > image.getHeight()) {
-            image.resize(imgSizeLimit, Jimp.AUTO);
-        } else {
-            image.resize(Jimp.AUTO, imgSizeLimit);
+        var image = (await Jimp.read(bytes.buffer)).quality(80);
+        var len = (await image.getBufferAsync(Jimp.MIME_JPEG)).byteLength;
+
+        while (len > sizeLimit) {
+            var reduceFactor = Math.max(Math.sqrt(sizeLimit / len) * 0.9);
+            // * 0.9 to reduce iteration.
+            image.resize(image.bitmap.width * reduceFactor, Jimp.AUTO);
+
+            // update len
+            len = (await image.getBufferAsync(Jimp.MIME_JPEG)).byteLength;
         }
         return toUrl(await image.getBase64Async(Jimp.MIME_JPEG)).replace('_', '/');
-    } else {
-        return 'data:' + mimeType + ';base64,' + base64EncodeURL(bytes);
     }
+    return 'data:' + mimeType + ';base64,' + base64EncodeURL(bytes);
 }

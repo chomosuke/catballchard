@@ -51,13 +51,11 @@ class _NewNameState extends State<NewName> {
 
       List<int> bytes = result.files.single.bytes!;
       String mimeType = lookupMimeType(result.files.single.name)!;
-      const imgSizeLimit = 512;
-      const sizeLimit = 50000;
+      const sizeLimit = 262144;
 
       setState(() {
         Future<String> imageUrl = (() async {
-          String imageUrl =
-              await imageToDataUrl(bytes, mimeType, sizeLimit, imgSizeLimit);
+          String imageUrl = await imageToDataUrl(bytes, mimeType, sizeLimit);
           setState(() {
             _canConfirm = true;
           });
