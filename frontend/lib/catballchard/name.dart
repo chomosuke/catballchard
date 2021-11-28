@@ -34,6 +34,35 @@ class _NameState extends State<Name> {
       Provider.of<lifecycle.All>(context, listen: false).delete(widget._name);
     }
 
+    final deleteDialog = AlertDialog(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      title: const Text('Delete Card'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: const <Widget>[
+            Text('This will remove the card \npermanantely from this website.'),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: const Text(
+            'Confirm',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onPressed: onDelete,
+        ),
+      ],
+    );
+
     final card = CardContainer(
       padding: 10,
       child: Column(
@@ -57,7 +86,10 @@ class _NameState extends State<Name> {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
                   child: IconButton(
-                    onPressed: onDelete,
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => deleteDialog,
+                    ),
                     padding: const EdgeInsets.all(0),
                     iconSize: 32,
                     icon: const Icon(Icons.delete_forever_outlined),
