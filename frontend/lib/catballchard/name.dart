@@ -45,7 +45,10 @@ class _NameState extends State<Name> {
               children: [
                 Container(
                   alignment: Alignment.topCenter,
-                  child: Image.network(widget._name.imageUrl),
+                  child: Image.network(
+                    widget._name.imageUrl,
+                    filterQuality: FilterQuality.medium,
+                  ),
                 ),
                 Container(
                   margin: const EdgeInsets.all(10),
@@ -78,7 +81,12 @@ class _NameState extends State<Name> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Flexible(child: Image.network(widget._name.imageUrl)),
+          Flexible(
+            child: Image.network(
+              widget._name.imageUrl,
+              filterQuality: FilterQuality.medium,
+            ),
+          ),
           SelectableText(
             widget._name.name,
             style: const TextStyle(
