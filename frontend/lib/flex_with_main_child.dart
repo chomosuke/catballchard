@@ -52,23 +52,16 @@ class _FlexWithMainChildState extends State<FlexWithMainChild> {
   Widget build(BuildContext context) {
     return _mainChildSize == null
         ? Offstage(
-            // wrap in center to mitigate the situation when parent does not
-            // permit FlexWithMainChild to have a different size (e.g. if parent
-            // is the screen)
-            child: Center(
-              child: getFlex(),
-            ),
+            child: getFlex(),
           )
-        : Center(
-            child: SizedBox(
-              width: widget.direction == Axis.vertical
-                  ? _mainChildSize!.width
-                  : null,
-              height: widget.direction == Axis.horizontal
-                  ? _mainChildSize!.height
-                  : null,
-              child: getFlex(),
-            ),
+        : SizedBox(
+            width: widget.direction == Axis.vertical
+                ? _mainChildSize!.width
+                : null,
+            height: widget.direction == Axis.horizontal
+                ? _mainChildSize!.height
+                : null,
+            child: getFlex(),
           );
   }
 

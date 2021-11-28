@@ -114,28 +114,30 @@ class _NameState extends State<Name> {
       onTap: () {
         Navigator.of(context).pop();
       },
-      child: FlexWithMainChild(
-        direction: Axis.vertical,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainChild: Flexible(
-          child: Image.network(
-            widget._name.imageUrl,
-            filterQuality: FilterQuality.medium,
-          ),
-        ),
-        childrenAfter: [
-          Container(
-            alignment: Alignment.center,
-            width: double.infinity,
-            color: const Color.fromARGB(64, 255, 255, 255),
-            child: SelectableText(
-              widget._name.name,
-              style: const TextStyle(
-                fontSize: 32,
-              ),
+      child: Center(
+        child: FlexWithMainChild(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainChild: Flexible(
+            child: Image.network(
+              widget._name.imageUrl,
+              filterQuality: FilterQuality.medium,
             ),
           ),
-        ],
+          childrenAfter: [
+            Container(
+              alignment: Alignment.center,
+              width: double.infinity,
+              color: const Color.fromARGB(64, 255, 255, 255),
+              child: SelectableText(
+                widget._name.name,
+                style: const TextStyle(
+                  fontSize: 32,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
