@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/flex_with_main_child.dart';
+import 'package:flex_with_main_child/flex_with_main_child.dart';
 import '../card_container.dart';
 import 'package:provider/provider.dart';
 import '../lifecycle.dart' as lifecycle;
@@ -115,8 +115,7 @@ class _NameState extends State<Name> {
         Navigator.of(context).pop();
       },
       child: Center(
-        child: FlexWithMainChild(
-          direction: Axis.vertical,
+        child: ColumnWithMainChild(
           mainAxisAlignment: MainAxisAlignment.center,
           mainChild: Flexible(
             child: Image.network(

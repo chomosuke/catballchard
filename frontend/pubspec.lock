@@ -78,6 +78,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
+  flex_with_main_child:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "02e61f314ace0e856ab90024ef6fd8d417403254"
+      url: "https://github.com/chomosuke/flex_with_main_child.git"
+    source: git
+    version: "0.0.1"
   flutter:
     dependency: "direct main"
     description: flutter
