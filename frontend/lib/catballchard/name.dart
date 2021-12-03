@@ -123,7 +123,7 @@ class _NameState extends State<Name> {
               filterQuality: FilterQuality.medium,
             ),
           ),
-          childrenAfter: [
+          childrenBelow: [
             Container(
               alignment: Alignment.center,
               width: double.infinity,

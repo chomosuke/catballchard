@@ -35,10 +35,7 @@ dependencies:
   mime: 1.0.1
   image: 3.0.8
   isolated_worker: 0.1.0
-  flex_with_main_child:
-    git:
-      url: https://github.com/chomosuke/flex_with_main_child.git
-      ref: master
+  flex_with_main_child: 0.1.0
 
 dev_dependencies:
   flutter_test:
