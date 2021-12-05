@@ -8,7 +8,7 @@ RUN apt update && apt install -y curl git unzip xz-utils zip
 USER root
 WORKDIR /home/root
 
-RUN git clone https://github.com/flutter/flutter.git
+RUN git clone https://github.com/flutter/flutter.git -b stable
 WORKDIR /home/root/flutter
 RUN git checkout tags/2.5.2
 WORKDIR /home/root
