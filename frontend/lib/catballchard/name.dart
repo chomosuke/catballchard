@@ -59,7 +59,10 @@ class _NameState extends State<Name> {
             'Confirm',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          onPressed: onDelete,
+          onPressed: () {
+            onDelete();
+            Navigator.of(context).pop();
+          },
         ),
       ],
     );
