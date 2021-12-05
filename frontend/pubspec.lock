@@ -77,14 +77,14 @@ packages:
       name: file_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.2.4"
+    version: "4.2.7"
   flex_with_main_child:
     dependency: "direct main"
     description:
       name: flex_with_main_child
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -134,7 +134,7 @@ packages:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.8"
+    version: "3.1.0"
   isolated_worker:
     dependency: "direct main"
     description:
