@@ -8,9 +8,7 @@ RUN apt update && apt install -y curl git unzip xz-utils zip
 USER root
 WORKDIR /home/root
 
-RUN git clone https://github.com/flutter/flutter.git -b stable
-WORKDIR /home/root/flutter
-RUN git checkout tags/2.5.2
+RUN git clone --depth 1 --branch 2.5.2 https://github.com/flutter/flutter.git
 WORKDIR /home/root
 ENV PATH "$PATH:/home/root/flutter/bin"
 RUN flutter precache --web
