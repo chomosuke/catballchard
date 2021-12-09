@@ -1,5 +1,9 @@
+401 if unauthorized
+
 ## POST `/add`
+- Authenticated route.
 - request:
+cookies
 ```
 {
     image_url: string,
@@ -15,7 +19,9 @@
 ```
 
 ## GET `/<id>`
-- request: None
+- Authenticated route.
+- request:
+cookies
 - response:
 404 if not found, 200 if ok.
 ```
@@ -26,12 +32,16 @@
 ```
 
 ## DELETE `/<id>`
-- request: None
+- Authenticated route.
+- request:
+cookies
 - response: None
 204 if not found, 200 if ok.
 
 ## GET `/all`
-- request: None
+- Authenticated route.
+- request:
+cookies
 - response:
 200 if ok.
 ```
@@ -39,3 +49,14 @@
     ids: string[],
 }
 ```
+
+## POST `/login`
+- request:
+```
+{
+    username: string,
+    password: string,
+}
+```
+- response:
+cookies
