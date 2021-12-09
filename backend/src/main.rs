@@ -6,6 +6,7 @@ use api::*;
 
 mod db;
 mod api;
+mod guard;
 
 #[derive(StructOpt)]
 struct Args {

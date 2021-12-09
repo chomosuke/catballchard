@@ -60,3 +60,14 @@ cookies
 ```
 - response:
 cookies
+
+## POST `/register`
+- request:
+```
+{
+    username: string,
+    password: string,
+}
+```
+- response:
+cookies

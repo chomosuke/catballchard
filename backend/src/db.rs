@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 pub struct DB {
     pub db: Database,
     pub names: Collection<Name>,
+    pub users: Collection<User>,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -18,6 +19,14 @@ pub struct Name {
     pub _id: ObjectId,
     pub image_url: String,
     pub name: String,
+    pub owner: ObjectId,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct User {
+    pub _id: ObjectId,
+    pub username: String,
+    pub password: String,
 }
 
 pub async fn get_db(connection_str: &str) -> mongodb::error::Result<DB> {
@@ -38,6 +47,7 @@ pub async fn get_db(connection_str: &str) -> mongodb::error::Result<DB> {
     Ok(
         DB {
             names: db.collection::<Name>("names"),
+            users: db.collection::<User>("users"),
             db,
         }
     )
