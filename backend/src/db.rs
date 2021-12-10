@@ -16,7 +16,8 @@ pub struct DB {
 
 #[derive(Deserialize, Serialize)]
 pub struct Name {
-    pub _id: ObjectId,
+    #[serde(skip_serializing_if="Option::is_none")]
+    pub _id: Option<ObjectId>,
     pub image_url: String,
     pub name: String,
     pub owner: ObjectId,
@@ -24,7 +25,8 @@ pub struct Name {
 
 #[derive(Deserialize, Serialize)]
 pub struct User {
-    pub _id: ObjectId,
+    #[serde(skip_serializing_if="Option::is_none")]
+    pub _id: Option<ObjectId>,
     pub username: String,
     pub password: String,
 }

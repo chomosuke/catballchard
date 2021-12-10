@@ -1,6 +1,5 @@
-use mongodb::{bson::oid::ObjectId, error::{ErrorKind, WriteFailure}};
 use rocket::{post, serde::{json::Json, Serialize, Deserialize}, State};
-use crate::db::{DB, Name};
+use crate::db::{DB, Name, User};
 
 #[derive(Deserialize)]
 pub struct Req {
@@ -16,27 +15,13 @@ pub struct Res {
 #[post("/add", data = "<new>")]
 // will automatically 422 if post body doesn't have the right type / parameter etc.
 // will 400 if body isn't a good json.
-pub async fn add(db: &State<DB>, new: Json<Req>) -> Json<Res> {
-    let id = loop {
-        let _id = ObjectId::new();
-        let result = db.names.insert_one(Name {
-            _id,
-            image_url: new.image_url.clone(),
-            name: new.name.clone(),
-        }, None).await;
-        if let Err(e) = &result {
-            if let ErrorKind::Write(WriteFailure::WriteError(e)) = &*(e.kind) {
-                if e.code == 11000 {
-                    println!("id {}, has collided", _id);
-                    continue;
-                }
-            }
-        }
-        // if result isn't the one that causes continue,
-        // either it's Ok(), or it's something that should panick
-        result.unwrap();
-        break _id.to_string();
-    };
+pub async fn add(db: &State<DB>, new: Json<Req>, user: User) -> Json<Res> {
+    let id = db.names.insert_one(Name {
+        _id: None,
+        image_url: new.image_url.clone(),
+        name: new.name.clone(),
+        owner: user._id.unwrap(),
+    }, None).await.unwrap().inserted_id.as_object_id().unwrap().to_string();
     return Json(Res {
         id,
     })

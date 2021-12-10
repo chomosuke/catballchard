@@ -10,19 +10,21 @@ use crate::db::{DB, User};
 
 const DURATION: u128 = 2629800000; // one month
 
+pub const TOKEN: &str = "token";
+
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for User {
     type Error = ();
 
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-        let token = req.cookies().get_private("token");
-        if token == None {
+        let token = req.cookies().get_private(TOKEN);
+        if token.is_none() {
             return Failure((Status::Unauthorized, ()));
         }
         let token = token.unwrap();
         let token = token.value();
         let id_time = get_id_time(token);
-        if id_time == None {
+        if id_time.is_none() {
             return Failure((Status::Unauthorized, ()));
         }
         let id_time = id_time.unwrap();
@@ -32,7 +34,11 @@ impl<'r> FromRequest<'r> for User {
             return Failure((Status::Unauthorized, ()));
         }
         let db = req.rocket().state::<DB>().unwrap();
-        let user = db.users.find_one(doc! { "_id": id }, None).await.unwrap();
+        let user = db.users.find_one(
+            doc! { "_id": ObjectId::parse_str(id).unwrap() },
+            None
+        ).await.unwrap();
+        println!("{}, {:?}", id, user.is_none());
         return match user {
             Some(u) => Success(u),
             None => Failure((Status::Unauthorized, ())),

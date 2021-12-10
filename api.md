@@ -70,4 +70,5 @@ cookies
 }
 ```
 - response:
+409 if not found, 200 if ok.
 cookies

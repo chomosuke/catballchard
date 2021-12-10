@@ -34,7 +34,7 @@ async fn rocket() -> _ {
 
     // initialize the server
     let mut server = rocket::custom(config)
-        .mount("/api", routes![all, add, get, delete])
+        .mount("/api", routes![all, add, get, delete, login, logout, register])
         .mount("/", FileServer::from("../web_build"))
         .manage(db::get_db(&args.connection_string).await
             .expect("Can't connect to database."));

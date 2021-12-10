@@ -1,6 +1,7 @@
 use rocket::{get, serde::{json::Json, Serialize}, State};
-use super::super::db::DB;
+use crate::db::{DB, User};
 use futures::stream::StreamExt;
+use mongodb::bson::doc;
 
 #[derive(Serialize)]
 pub struct Res {
@@ -8,11 +9,14 @@ pub struct Res {
 }
 
 #[get("/all")]
-pub async fn all(db: &State<DB>) -> Json<Res> {
-    let mut names = db.names.find(None, None).await.unwrap();
+pub async fn all(db: &State<DB>, user: User) -> Json<Res> {
+    let mut names = db.names.find(
+        doc! { "owner": user._id, },
+        None
+    ).await.unwrap();
     let mut ids = Vec::new();
     while let Some(name) = names.next().await {
-        ids.push(name.unwrap()._id.to_string());
+        ids.push(name.unwrap()._id.unwrap().to_string());
     }
     return Json(Res {
         ids,
