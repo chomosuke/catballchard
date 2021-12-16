@@ -1,6 +1,14 @@
+200 if ok
+204 if DELETE not found
+400 if body isn't valid json
 401 if unauthorized
+404 if GET/PATCH not found
+409 if conflict
+422 if request does not fit schema or if sub entities not found
 
-## POST `/add`
+# CURD for card
+
+## POST `/card`
 - Authenticated route.
 - request:
 cookies
@@ -8,47 +16,101 @@ cookies
 {
     image_url: string,
     name: string,
+    section_id: string,
 }
 ```
 - response:
-422 if request does not fit schema, 400 if body isn't valid json, 200 if ok.
 ```
 {
     id: string,
 }
 ```
 
-## GET `/<id>`
+## PATCH `/card/<id>`
 - Authenticated route.
 - request:
 cookies
+```
+{
+    image_url?: string,
+    name?: string,
+    section_id?: string,
+}
+```
+- response: None
+
+## GET `/card/<id>`
+- request: none
 - response:
-404 if not found, 200 if ok.
 ```
 {
     image_url: string,
     name: string,
+    section_id: string,
 }
 ```
 
-## DELETE `/<id>`
+## DELETE `/card/<id>`
 - Authenticated route.
 - request:
 cookies
 - response: None
-204 if not found, 200 if ok.
 
-## GET `/all`
-- Authenticated route.
+# CRD for section (update for section = create/delete for card)
+
+## POST `/section`
+- Authenticated route
 - request:
 cookies
+```
+{
+    name: string,
+}
+```
+- response: 
+```
+{
+    id: string,
+}
+```
+
+## GET `/section/<id>`
+- request: none
 - response:
-200 if ok.
+```
+{
+    name: string,
+    card_ids: string[],
+}
+```
+
+## DELETE `/section/<id>`
+- request:
+cookies
+- response: None
+
+# fetching all sections
+
+## GET `/section/all`
+- request: none
+- response:
 ```
 {
     ids: string[],
 }
 ```
+
+## GET `/section/owned`
+- request:
+cookies
+- response:
+```
+{
+    ids: string[],
+}
+```
+
+# Account management
 
 ## POST `/login`
 - request:
@@ -70,5 +132,19 @@ cookies
 }
 ```
 - response:
-409 if not found, 200 if ok.
 cookies
+
+## POST `/logout`
+- request: none
+- response:
+delete cookies
+
+## PATCH `/account`
+- request:
+cookies
+```
+{
+    username?: string,
+    password?: string,
+}
+```
