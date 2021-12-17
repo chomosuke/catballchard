@@ -9,6 +9,6 @@ edition = "2021"
 rocket = { version = "0.5.0-rc.1", features = ["json", "secrets"] }
 rocket_cors = { git = "https://github.com/lawliet89/rocket_cors", rev = "a062933" }
 structopt = "0.3.25"
-mongodb = "2.0.2"
+mongodb = "2.1.0"
 serde = { version = "1.0", features = ["derive"] }
 futures = "0.3.17"

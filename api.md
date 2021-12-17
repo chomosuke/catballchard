@@ -9,9 +9,7 @@
 # CURD for card
 
 ## POST `/card`
-- Authenticated route.
-- request:
-cookies
+- request: cookies
 ```
 {
     image_url: string,
@@ -27,9 +25,7 @@ cookies
 ```
 
 ## PATCH `/card/<id>`
-- Authenticated route.
-- request:
-cookies
+- request: cookies
 ```
 {
     image_url?: string,
@@ -40,7 +36,7 @@ cookies
 - response: None
 
 ## GET `/card/<id>`
-- request: none
+- request: None
 - response:
 ```
 {
@@ -51,17 +47,13 @@ cookies
 ```
 
 ## DELETE `/card/<id>`
-- Authenticated route.
-- request:
-cookies
+- request: cookies
 - response: None
 
-# CRD for section (update for section = create/delete for card)
+# CRUD for section
 
 ## POST `/section`
-- Authenticated route
-- request:
-cookies
+- request: cookies
 ```
 {
     name: string,
@@ -75,7 +67,7 @@ cookies
 ```
 
 ## GET `/section/<id>`
-- request: none
+- request: None
 - response:
 ```
 {
@@ -84,15 +76,22 @@ cookies
 }
 ```
 
+## PATCH `/section/<id>`
+- request: cookies
+```
+{
+    name: string
+}
+```
+
 ## DELETE `/section/<id>`
-- request:
-cookies
+- request: cookies
 - response: None
 
-# fetching all sections
+# fetching sections
 
 ## GET `/section/all`
-- request: none
+- request: None
 - response:
 ```
 {
@@ -101,8 +100,7 @@ cookies
 ```
 
 ## GET `/section/owned`
-- request:
-cookies
+- request: cookies
 - response:
 ```
 {
@@ -120,8 +118,7 @@ cookies
     password: string,
 }
 ```
-- response:
-cookies
+- response: cookies
 
 ## POST `/register`
 - request:
@@ -131,17 +128,14 @@ cookies
     password: string,
 }
 ```
-- response:
-cookies
+- response: cookies
 
 ## POST `/logout`
-- request: none
-- response:
-delete cookies
+- request: None
+- response: delete cookies
 
 ## PATCH `/account`
-- request:
-cookies
+- request: cookies
 ```
 {
     username?: string,
