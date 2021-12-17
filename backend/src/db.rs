@@ -10,17 +10,25 @@ use serde::{Deserialize, Serialize};
 
 pub struct DB {
     pub db: Database,
-    pub names: Collection<Name>,
+    pub cards: Collection<Card>,
+    pub sections: Collection<Section>,
     pub users: Collection<User>,
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct Name {
+pub struct Card {
     #[serde(skip_serializing_if="Option::is_none")]
     pub _id: Option<ObjectId>,
     pub image_url: String,
+    pub description: String,
+    pub section_id: ObjectId,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct Section {
+    #[serde(skip_serializing_if="Option::is_none")]
+    pub _id: Option<ObjectId>,
     pub name: String,
-    pub owner: ObjectId,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -48,7 +56,8 @@ pub async fn get_db(connection_str: &str) -> mongodb::error::Result<DB> {
 
     Ok(
         DB {
-            names: db.collection::<Name>("names"),
+            cards: db.collection::<Card>("cards"),
+            sections: db.collection::<Section>("sections"),
             users: db.collection::<User>("users"),
             db,
         }

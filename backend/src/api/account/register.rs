@@ -10,7 +10,7 @@ pub struct Req {
 
 #[post("/register", data = "<req>")]
 pub async fn register(db: &State<DB>, cookie_jar: &CookieJar<'_>, req: Json<Req>) -> Status {
-    if !db.users.find_one(doc! {"username": &req.username}, None).await.unwrap().is_none() {
+    if db.users.find_one(doc! {"username": &req.username}, None).await.unwrap().is_some() {
         return Status::Conflict;
     }
     let id = db.users.insert_one(User {

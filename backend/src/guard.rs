@@ -38,7 +38,6 @@ impl<'r> FromRequest<'r> for User {
             doc! { "_id": ObjectId::parse_str(id).unwrap() },
             None
         ).await.unwrap();
-        println!("{}, {:?}", id, user.is_none());
         return match user {
             Some(u) => Success(u),
             None => Failure((Status::Unauthorized, ())),
