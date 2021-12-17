@@ -34,6 +34,9 @@ async fn rocket() -> _ {
 
     // initialize the server
     let mut server = rocket::custom(config)
+        .mount("/api/section", routes![
+            section::all, section:: delete, section::get, section::owned, section::post,
+        ])
         .mount("/api", routes![
             account::login, account::logout, account::patch, account::register,
         ])
