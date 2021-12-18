@@ -13,10 +13,11 @@ pub async fn register(db: &State<DB>, cookie_jar: &CookieJar<'_>, req: Json<Req>
     if db.users.find_one(doc! {"username": &req.username}, None).await.unwrap().is_some() {
         return Status::Conflict;
     }
+    let Req { username, password } = req.into_inner();
     let id = db.users.insert_one(User {
         _id: None,
-        username: req.username.clone(),
-        password: req.password.clone(),
+        username,
+        password,
     }, None).await.unwrap().inserted_id.as_object_id().unwrap();
     cookie_jar.add_private(Cookie::new(
         TOKEN, 

@@ -13,7 +13,7 @@
 ```
 {
     image_url: string,
-    name: string,
+    description: string,
     section_id: string,
 }
 ```
@@ -29,7 +29,7 @@
 ```
 {
     image_url?: string,
-    name?: string,
+    description?: string,
     section_id?: string,
 }
 ```
@@ -41,7 +41,7 @@
 ```
 {
     image_url: string,
-    name: string,
+    description: string,
     section_id: string,
 }
 ```

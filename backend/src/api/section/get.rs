@@ -11,7 +11,7 @@ pub struct Res {
 
 #[get("/<id>")]
 pub async fn get(db: &State<DB>, id: &str) -> Option<Json<Res>> {
-    let _id = if let Ok(id) = ObjectId::parse_str(id) {
+    let id = if let Ok(id) = ObjectId::parse_str(id) {
         id
     } else {
         return None; // this will return 404
@@ -20,11 +20,11 @@ pub async fn get(db: &State<DB>, id: &str) -> Option<Json<Res>> {
     // result will be unwrapped, so error will panic.
     // but option will be forwarded, so if not found -> None 404
     let section = db.sections.find_one(
-        doc! { "_id": _id }, None
+        doc! { "_id": id }, None
     ).await.unwrap()?;
 
     let mut cards = db.cards.find(
-        doc! {  "section_id": section._id }, None
+        doc! { "section_id": section._id }, None
     ).await.unwrap();
     let mut card_ids = Vec::new();
     while let Some(card) = cards.next().await {

@@ -17,7 +17,7 @@ pub struct Res {
 pub async fn post(db: &State<DB>, new: Json<Req>, user: User) -> Json<Res> {
     let id = db.sections.insert_one(Section {
         _id: None,
-        name: new.name.clone(),
+        name: new.into_inner().name,
         user_id: user._id.unwrap(),
     }, None).await.unwrap().inserted_id.as_object_id().unwrap().to_string();
     return Json(Res {

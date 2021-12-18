@@ -24,12 +24,37 @@ pub struct Card {
     pub section_id: ObjectId,
 }
 
+pub async fn verify_card_id(card_id: &ObjectId, db: &DB, user: &User) -> bool {
+    let card = db.cards.find_one(doc! { "_id": card_id }, None).await.unwrap();
+    if card.is_none() {
+        return false;
+    }
+    let card = card.unwrap();
+    let section
+         = db.sections.find_one(doc! { "_id": card.section_id }, None)
+           .await.unwrap().expect(&format!("orphanded card, id: {}", &card._id.unwrap().to_string()));
+    if section.user_id != user._id.unwrap() {
+        return false;
+    }
+    return true;
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct Section {
     #[serde(skip_serializing_if="Option::is_none")]
     pub _id: Option<ObjectId>,
     pub name: String,
     pub user_id: ObjectId,
+}
+
+pub async fn verify_section_id(section_id: &ObjectId, db: &DB, user: &User) -> bool {
+    let section
+        = db.sections.find_one(doc! { "_id": section_id }, None).await.unwrap();
+    if section.is_none() || section.as_ref().unwrap().user_id != user._id.unwrap() {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 #[derive(Deserialize, Serialize)]
