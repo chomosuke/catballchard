@@ -21,6 +21,9 @@ struct Args {
 
     #[structopt(short, long)]
     connection_string: String,
+
+    #[structopt(short, long)]
+    secret_key: Option<String>,
 }
 
 #[rocket::launch]
@@ -28,9 +31,16 @@ async fn rocket() -> _ {
     let args = Args::from_args();
 
     // custom config, default port 80
-    let config = Config::figment()
-        .merge(("port", args.port.unwrap_or(Config::default().port)))
-        .merge(("address", args.address.unwrap_or(Config::default().address)));
+    let mut config = Config::figment();
+    if args.port.is_some() {
+        config = config.merge(("port", args.port.unwrap()));
+    }
+    if args.address.is_some() {
+        config = config.merge(("address", args.address.unwrap()));
+    }
+    if args.secret_key.is_some() {
+        config = config.merge(("secret_key", args.secret_key.unwrap()))
+    }
 
     // initialize the server
     let mut server = rocket::custom(config)
