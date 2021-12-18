@@ -14,7 +14,7 @@ pub async fn patch(db: &State<DB>, id: &str, req: Json<Req>, user: User) -> Stat
     let id = if let Ok(id) = ObjectId::parse_str(id) {
         id
     } else {
-        return Status::NoContent;
+        return Status::NotFound;
     };
     if !verify_card_id(&id, db, &user).await {
         return Status::NotFound;
@@ -26,7 +26,7 @@ pub async fn patch(db: &State<DB>, id: &str, req: Json<Req>, user: User) -> Stat
         if let Ok(section_id) = ObjectId::parse_str(section_id) {
             Some(section_id)
         } else {
-            return Status::NoContent;
+            return Status::NotFound;
         }
     } else {
         None

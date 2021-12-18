@@ -30,9 +30,8 @@ pub async fn verify_card_id(card_id: &ObjectId, db: &DB, user: &User) -> bool {
         return false;
     }
     let card = card.unwrap();
-    let section
-         = db.sections.find_one(doc! { "_id": card.section_id }, None)
-           .await.unwrap().expect(&format!("orphanded card, id: {}", &card._id.unwrap().to_string()));
+    let section = db.sections.find_one(doc! { "_id": card.section_id }, None)
+        .await.unwrap().expect(&format!("orphanded card, id: {}", &card._id.unwrap().to_string()));
     if section.user_id != user._id.unwrap() {
         return false;
     }

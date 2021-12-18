@@ -35,13 +35,24 @@ async fn rocket() -> _ {
     // initialize the server
     let mut server = rocket::custom(config)
         .mount("/api/card", routes![
-            card::delete, card::get, card::patch, card::post,
+            card::delete,
+            card::get,
+            card::patch,
+            card::post,
         ])
         .mount("/api/section", routes![
-            section::all, section::delete, section::get, section::owned, section::post,
+            section::all,
+            section::delete,
+            section::get,
+            section::owned,
+            section::patch,
+            section::post,
         ])
         .mount("/api", routes![
-            account::login, account::logout, account::patch, account::register,
+            account::login,
+            account::logout,
+            account::patch,
+            account::register,
         ])
         .mount("/", FileServer::from("../web_build"))
         .manage(db::get_db(&args.connection_string).await

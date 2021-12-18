@@ -24,5 +24,4 @@ pub async fn login(db: &State<DB>, cookie_jar: &CookieJar<'_>, req: Json<Req>) -
         },
         None => return Status::Unauthorized,
     };
-
 }
