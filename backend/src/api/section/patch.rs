@@ -18,9 +18,10 @@ pub async fn patch(db: &State<DB>, id: &str, req: Json<Req>, user: User) -> Stat
         return Status::NotFound;
     }
 
-    db.users.update_one(
+    println!("{}", &req.name);
+    db.sections.update_one(
         doc! { "_id": id },
-        doc! { "name": req.into_inner().name },
+        doc! { "$set": { "name": req.into_inner().name } },
         None,
     ).await.unwrap();
     return Status::Ok;

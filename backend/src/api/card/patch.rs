@@ -48,7 +48,7 @@ pub async fn patch(db: &State<DB>, id: &str, req: Json<Req>, user: User) -> Stat
     }
     let update = doc! { "$set": update };
 
-    db.users.update_one(
+    db.cards.update_one(
         doc! { "_id": id },
         update,
         None,
