@@ -1,22 +1,22 @@
 import 'package:flutter/foundation.dart';
-import 'fetch.dart' hide All, Name;
-import 'fetch.dart' as fetch show Name;
-export 'fetch.dart' show NewName;
+import 'http/url.dart' hide All, Card;
+import 'http/url.dart' as fetch show Card;
+export 'http/url.dart' show NewCard;
 
 class All extends ChangeNotifier {
-  late Future<List<Future<Name>>> _all;
+  late Future<List<Future<Card>>> _all;
   All() {
     _all = (() async {
       final List<String> ids = (await getAll()).ids;
-      return ids.map((id) => Name.get(id)).toList();
+      return ids.map((id) => Card.get(id)).toList();
     })();
   }
 
-  void add(NewName newName) {
-    final Future<Name> name = Name.post(newName);
+  void add(NewCard newName) {
+    final Future<Card> name = Card.post(newName);
     _all = (() async {
       // get the list from future
-      final List<Future<Name>> all = await _all;
+      final List<Future<Card>> all = await _all;
       // add to the list
       all.add(name);
       // return the list which will be wrapped in a future because async.
@@ -27,10 +27,10 @@ class All extends ChangeNotifier {
 
   // name that's not in list is no-op to the list _all,
   // will still call delete on name
-  void delete(Name name) {
+  void delete(Card name) {
     _all = (() async {
       // get the list from future
-      final List<Future<Name>> all = await _all;
+      final List<Future<Card>> all = await _all;
       var i = 0;
       while (i < all.length) {
         if (await all[i] == name) {
@@ -47,10 +47,10 @@ class All extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<Future<Name>>> get all => _all;
+  Future<List<Future<Card>>> get all => _all;
 }
 
-class Name extends ChangeNotifier {
+class Card extends ChangeNotifier {
   String _id;
   String get id => _id;
   String _imageUrl;
@@ -58,19 +58,19 @@ class Name extends ChangeNotifier {
   String _name;
   String get name => _name;
 
-  Name._plain(this._id, this._imageUrl, this._name);
+  Card._plain(this._id, this._imageUrl, this._name);
 
-  static Future<Name> get(String id) async {
-    final fetch.Name nameData = await getName(id);
-    return Name._plain(nameData.id, nameData.imageUrl, nameData.name);
+  static Future<Card> get(String id) async {
+    final fetch.Card nameData = await getCard(id);
+    return Card._plain(nameData.id, nameData.imageUrl, nameData.description);
   }
 
-  static Future<Name> post(NewName newName) async {
-    final String id = await postAdd(newName);
-    return Name._plain(id, newName.imageUrl, newName.name);
+  static Future<Card> post(NewCard newName) async {
+    final String id = await postCard(newName);
+    return Card._plain(id, newName.imageUrl, newName.description);
   }
 
   Future<void> delete() async {
-    await deleteName(_id);
+    await deleteCard(_id);
   }
 }

@@ -1,12 +1,12 @@
-200 if ok
-204 if DELETE not found
-400 if body isn't valid json
-401 if unauthorized
-404 if GET/PATCH not found
-409 if conflict
-422 if request does not fit schema or if sub entities not found
+- 200 if ok
+- 204 if DELETE not found
+- 400 if body isn't valid json
+- 401 if unauthorized
+- 404 if GET/PATCH not found
+- 409 if conflict
+- 422 if request does not fit schema or if sub entities not found
 
-# CURD for card
+# CRUD for card
 
 ## POST `/card`
 - request: cookies
@@ -24,17 +24,6 @@
 }
 ```
 
-## PATCH `/card/<id>`
-- request: cookies
-```
-{
-    image_url?: string,
-    description?: string,
-    section_id?: string,
-}
-```
-- response: None
-
 ## GET `/card/<id>`
 - request: None
 - response:
@@ -45,6 +34,17 @@
     section_id: string,
 }
 ```
+
+## PATCH `/card/<id>`
+- request: cookies
+```
+{
+    image_url?: string,
+    description?: string,
+    section_id?: string,
+}
+```
+- response: None
 
 ## DELETE `/card/<id>`
 - request: cookies

@@ -36,6 +36,7 @@ dependencies:
   image: ^3.0.8
   isolated_worker: ^0.1.0
   flex_with_main_child: ^0.1.0
+  http_status_code: ^0.0.2
 
 dev_dependencies:
   flutter_test:

@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import '../lifecycle.dart' as lifecycle;
 
 class Name extends StatefulWidget {
-  final lifecycle.Name _name;
-  const Name({Key? key, required lifecycle.Name name})
+  final lifecycle.Card _name;
+  const Name({Key? key, required lifecycle.Card name})
       : _name = name,
         super(key: key);
 

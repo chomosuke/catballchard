@@ -28,7 +28,7 @@ class _NewNameState extends State<NewName> {
   Widget build(BuildContext context) {
     void onConfirm() async {
       Provider.of<lifecycle.All>(context, listen: false)
-          .add(lifecycle.NewName(await _content!.imageUrl, _content!.name));
+          .add(lifecycle.NewCard(await _content!.imageUrl, _content!.name));
       setState(() {
         _content = null;
       });

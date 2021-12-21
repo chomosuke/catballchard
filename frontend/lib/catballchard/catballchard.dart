@@ -10,7 +10,7 @@ class Catballchard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<All>(
-      builder: (context, all, child) => MFutureBuilder<List<Future<Name>>>(
+      builder: (context, all, child) => MFutureBuilder<List<Future<Card>>>(
         future: all.all,
         builder: (context, data) => Grid(
           nameFutures: data,
