@@ -63,6 +63,7 @@ async fn rocket() -> _ {
             account::logout,
             account::patch,
             account::register,
+            account::username,
         ])
         .mount("/", FileServer::from("../web_build"))
         .manage(db::get_db(&args.connection_string).await

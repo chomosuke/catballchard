@@ -142,3 +142,13 @@
     password?: string,
 }
 ```
+- response: None
+
+## GET `/username`
+- request: cookies
+- response: 
+```
+{
+    username: string,
+}
+```
