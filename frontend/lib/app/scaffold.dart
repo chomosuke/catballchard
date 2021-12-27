@@ -29,24 +29,59 @@ class _MScaffoldState extends State<MScaffold> {
       height: 56,
       child: MFutureBuilder<List<state.Section>>(
         future: widget.currentState.sections,
-        builder: (context, data) => ListView(
-          scrollDirection: Axis.horizontal,
-          children: data
-              .map<Widget>(
-                (section) => TextButton(
-                  onPressed: () {
-                    setState(() {
-                      selected = section;
-                    });
-                  },
-                  child: MFutureBuilder<state.SectionData>(
-                    future: section.data,
-                    builder: (context, data) => Text(data.name),
-                  ),
+        builder: (context, data) {
+          final scrollController = ScrollController();
+          return Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  scrollController.animateTo(
+                    scrollController.offset - 200,
+                    curve: Curves.easeInOut,
+                    duration: const Duration(milliseconds: 100),
+                  );
+                },
+                icon: const Icon(Icons.navigate_before),
+              ),
+              Expanded(
+                child: ListView(
+                  controller: scrollController,
+                  scrollDirection: Axis.horizontal,
+                  children: data
+                      .map<Widget>(
+                        (section) => Container(
+                          decoration: const BoxDecoration(
+                            border: Border.symmetric(vertical: BorderSide()),
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                selected = section;
+                              });
+                            },
+                            child: MFutureBuilder<state.SectionData>(
+                              future: section.data,
+                              builder: (context, data) => Text(data.name),
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
-              )
-              .toList(),
-        ),
+              ),
+              IconButton(
+                onPressed: () {
+                  scrollController.animateTo(
+                    scrollController.offset + 200,
+                    curve: Curves.easeInOut,
+                    duration: const Duration(milliseconds: 100),
+                  );
+                },
+                icon: const Icon(Icons.navigate_next),
+              ),
+            ],
+          );
+        },
       ),
     );
 
