@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart' hide Card;
-import 'package:frontend/future_builder.dart';
+import 'package:frontend/helpers/future_builder.dart';
 import 'card.dart';
 import 'package:frontend/states/state.dart' as state;
 

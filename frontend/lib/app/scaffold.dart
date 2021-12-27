@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/catballchard/section.dart';
+import 'section.dart';
 import 'package:frontend/http/url.dart';
-import 'package:frontend/future_builder.dart';
+import 'package:frontend/helpers/future_builder.dart';
 import 'package:frontend/states/state.dart' as state;
 
 class MScaffold extends StatefulWidget {
@@ -55,9 +55,10 @@ class _MScaffoldState extends State<MScaffold> {
         children: [
           tabs,
           Expanded(
-              child: selected == null
-                  ? const Center(child: Text('no section selected'))
-                  : Section(section: selected!)),
+            child: selected == null
+                ? const Center(child: Text('no section selected'))
+                : Section(section: selected!),
+          ),
         ],
       ),
     );

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flex_with_main_child/flex_with_main_child.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:frontend/actions/reducer.dart';
-import 'package:frontend/card_container.dart';
-import 'package:frontend/catballchard/dialogs/warning_dialog.dart';
-import 'package:frontend/future_builder.dart';
+import 'package:frontend/helpers/card_container.dart';
+import 'package:frontend/helpers/warning_dialog.dart';
+import 'package:frontend/helpers/future_builder.dart';
 import 'package:frontend/states/state.dart' as state;
-import 'package:http/http.dart';
 
 class Card extends StatelessWidget {
   final state.Card card;

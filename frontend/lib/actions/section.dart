@@ -1,4 +1,4 @@
-import 'package:frontend/actions/reducer.dart';
+import 'reducer.dart';
 import 'package:frontend/states/state.dart';
 
 class AddSection extends Action {

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:frontend/actions/reducer.dart';
-import 'package:frontend/catballchard/scaffold.dart';
-import 'package:frontend/future_builder.dart';
+import 'package:frontend/app/app.dart';
 import 'package:redux/redux.dart';
 import 'package:frontend/states/state.dart' as state;
 
@@ -21,26 +20,4 @@ void main() {
     store: store,
     child: App(navigatorKey: _navigatorKey),
   ));
-}
-
-class App extends StatelessWidget {
-  final GlobalKey<NavigatorState> navigatorKey;
-  const App({Key? key, required this.navigatorKey}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      title: 'CatBallChard',
-      theme: ThemeData(
-        primarySwatch: Colors.brown,
-      ),
-      home: MFutureBuilder<state.State>(
-        future: StoreProvider.of<Future<state.State>>(context).state,
-        builder: (context, data) => MScaffold(
-          currentState: data,
-        ),
-      ),
-    );
-  }
 }
