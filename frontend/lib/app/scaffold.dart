@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:frontend/actions/account.dart';
-import 'package:frontend/app/forms/sign_in_up.dart';
+import 'forms/add_section.dart';
+import 'forms/sign_in_up.dart';
 import 'package:frontend/helpers/as_non_null.dart';
 import 'package:frontend/helpers/warning_dialog.dart';
 import 'section.dart';
@@ -27,8 +28,11 @@ class _MScaffoldState extends State<MScaffold> {
   Widget build(BuildContext context) {
     final tabs = SizedBox(
       height: 56,
-      child: MFutureBuilder<List<state.Section>>(
-        future: widget.currentState.sections,
+      child: MFutureBuilder<List<dynamic>>(
+        future: Future.wait([
+          widget.currentState.sections,
+          widget.currentState.username,
+        ]),
         builder: (context, data) {
           final scrollController = ScrollController();
           return Row(
@@ -47,7 +51,7 @@ class _MScaffoldState extends State<MScaffold> {
                 child: ListView(
                   controller: scrollController,
                   scrollDirection: Axis.horizontal,
-                  children: data
+                  children: data[0]
                       .map<Widget>(
                         (section) => Container(
                           decoration: const BoxDecoration(
@@ -79,6 +83,14 @@ class _MScaffoldState extends State<MScaffold> {
                 },
                 icon: const Icon(Icons.navigate_next),
               ),
+              if (data[1] != null)
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context, builder: (context) => AddSection());
+                  },
+                  icon: const Icon(Icons.add),
+                ),
             ],
           );
         },
