@@ -72,7 +72,7 @@ class CardPatch {
 }
 
 Future<void> patchCard(CardPatch cardPatch, String id) async {
-  final response = await http.post(
+  final response = await http.patch(
     apiUrl.resolve('card/$id'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

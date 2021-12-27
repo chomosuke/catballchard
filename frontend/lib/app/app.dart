@@ -16,10 +16,12 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      home: MFutureBuilder<state.State>(
-        future: StoreProvider.of<Future<state.State>>(context).state,
-        builder: (context, data) => MScaffold(
-          currentState: data,
+      home: StoreBuilder<Future<state.State>>(
+        builder: (context, vm) => MFutureBuilder<state.State>(
+          future: vm.state,
+          builder: (context, data) => MScaffold(
+            currentState: data,
+          ),
         ),
       ),
     );

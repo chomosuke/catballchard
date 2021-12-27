@@ -20,7 +20,7 @@ pub async fn register(db: &State<DB>, cookie_jar: &CookieJar<'_>, req: Json<Req>
         password,
     }, None).await.unwrap().inserted_id.as_object_id().unwrap();
     cookie_jar.add_private(Cookie::new(
-        TOKEN, 
+        TOKEN,
         get_token(id)
     ));
     return Status::Ok;

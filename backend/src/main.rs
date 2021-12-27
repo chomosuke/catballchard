@@ -1,5 +1,5 @@
 use rocket::{fs::FileServer, Config, routes};
-use rocket_cors::CorsOptions;
+use rocket_cors::{CorsOptions, AllowedOrigins};
 use std::net::IpAddr;
 use structopt::StructOpt;
 use api::*;
@@ -71,7 +71,13 @@ async fn rocket() -> _ {
 
     // if debug mode, allow CORS
     if args.debug {
-        server = server.attach(CorsOptions::default().to_cors().unwrap());
+        server = server.attach(
+            CorsOptions::default()
+            .send_wildcard(false)
+            .allowed_origins(AllowedOrigins::some_regex(&["^http://localhost"]))
+            .allow_credentials(true)
+            .to_cors().unwrap(),
+        );
     }
 
     // launch

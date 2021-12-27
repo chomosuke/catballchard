@@ -56,7 +56,7 @@ class SectionPatch {
 }
 
 Future<void> patchSection(SectionPatch sectionPatch, String id) async {
-  final response = await http.post(
+  final response = await http.patch(
     apiUrl.resolve('section/$id'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

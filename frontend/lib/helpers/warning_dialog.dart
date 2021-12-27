@@ -17,10 +17,8 @@ class WarningDialog extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
-      title: const Text('Delete Card'),
-      content: const Text(
-        'This will remove the card \npermanantely from this website.',
-      ),
+      title: Text(title),
+      content: Text(description),
       actions: <Widget>[
         TextButton(
           child: const Text('Cancel'),

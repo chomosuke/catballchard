@@ -37,7 +37,7 @@ Future<bool> login(AccountPost accountPost) async {
 }
 
 Future<void> logout() async {
-  await http.post(apiUrl.resolve('register'));
+  await http.post(apiUrl.resolve('logout'));
 }
 
 Future<bool> register(AccountPost accountPost) async {
@@ -74,8 +74,8 @@ class AccountPatch {
 }
 
 Future<bool> patchAccount(AccountPatch accountPatch) async {
-  final response = await http.post(
-    apiUrl.resolve('register'),
+  final response = await http.patch(
+    apiUrl.resolve('account'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
