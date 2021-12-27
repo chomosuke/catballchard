@@ -1,38 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:frontend/catballchard/catballchard.dart';
-import 'package:provider/provider.dart';
-import 'http/url.dart' show baseUrl;
-import 'lifecycle.dart';
-
-void main() {
-  debugPaintSizeEnabled = true;
-  runApp(
-      ChangeNotifierProvider(create: (context) => All(), child: const App()));
-}
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:frontend/actions/reducer.dart';
+import 'package:frontend/catballchard/scaffold.dart';
+import 'package:frontend/future_builder.dart';
+import 'package:redux/redux.dart';
+import 'package:frontend/states/state.dart' as state;
 
 // for dialog from everywhere
 final _navigatorKey = GlobalKey<NavigatorState>();
 BuildContext? getContext() => _navigatorKey.currentContext;
 
+void main() {
+  debugPaintSizeEnabled = true;
+  final store = Store<Future<state.State>>(
+    (state, action) => reducer(state, action),
+    initialState: Future.value(state.State.get()),
+  );
+  runApp(StoreProvider<Future<state.State>>(
+    store: store,
+    child: App(navigatorKey: _navigatorKey),
+  ));
+}
+
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  final GlobalKey<NavigatorState> navigatorKey;
+  const App({Key? key, required this.navigatorKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: _navigatorKey,
+      navigatorKey: navigatorKey,
       title: 'CatBallChard',
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          leading: Image.network(baseUrl.resolve('favicon.ico').toString()),
-          title: const Text('CatBallChard'),
-          leadingWidth: 56 / 210 * 240,
+      home: MFutureBuilder<state.State>(
+        future: StoreProvider.of<Future<state.State>>(context).state,
+        builder: (context, data) => MScaffold(
+          currentState: data,
         ),
-        body: const Catballchard(),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:frontend/http/status_code_handling.dart';
-
+import 'status_code_handling.dart';
+import 'package:http_status_code/http_status_code.dart';
 import 'url.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,8 +22,8 @@ Future<String> postSection(NewSection newSection) async {
     },
     body: jsonEncode(newSection.toReq()),
   );
-  if (response.statusCode != 200) {
-    throw StatusCodeException(200);
+  if (response.statusCode != StatusCode.OK) {
+    throw StatusCodeException(response.statusCode);
   }
   return jsonDecode(response.body)['id'];
 }
@@ -39,8 +39,8 @@ class Section {
 
 Future<Section> getSection(String id) async {
   final response = await http.get(apiUrl.resolve('section/$id'));
-  if (response.statusCode != 200) {
-    throw StatusCodeException(200);
+  if (response.statusCode != StatusCode.OK) {
+    throw StatusCodeException(response.statusCode);
   }
   return Section.fromRes(jsonDecode(response.body), id);
 }
@@ -63,14 +63,14 @@ Future<void> patchSection(SectionPatch sectionPatch, String id) async {
     },
     body: jsonEncode(sectionPatch.toReq()),
   );
-  if (response.statusCode != 200) {
-    throw StatusCodeException(200);
+  if (response.statusCode != StatusCode.OK) {
+    throw StatusCodeException(response.statusCode);
   }
 }
 
 Future<void> deleteSection(String id) async {
   final response = await http.delete(apiUrl.resolve('section/$id'));
-  if (response.statusCode != 200) {
-    throw StatusCodeException(200);
+  if (response.statusCode != StatusCode.OK) {
+    throw StatusCodeException(response.statusCode);
   }
 }

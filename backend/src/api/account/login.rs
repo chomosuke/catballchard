@@ -17,7 +17,7 @@ pub async fn login(db: &State<DB>, cookie_jar: &CookieJar<'_>, req: Json<Req>) -
     match user {
         Some(user) => {
             cookie_jar.add_private(Cookie::new(
-                TOKEN, 
+                TOKEN,
                 get_token(user._id.unwrap())
             ));
             return Status::Ok;

@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:frontend/http/status_code_handling.dart';
+import 'package:http_status_code/http_status_code.dart';
+import 'status_code_handling.dart';
 import 'url.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,8 +26,8 @@ Future<String> postCard(NewCard newCard) async {
     },
     body: jsonEncode(newCard.toReq()),
   );
-  if (response.statusCode != 200) {
-    throw StatusCodeException(200);
+  if (response.statusCode != StatusCode.OK) {
+    throw StatusCodeException(response.statusCode);
   }
   return jsonDecode(response.body)['id'];
 }
@@ -44,8 +45,8 @@ class Card {
 
 Future<Card> getCard(String id) async {
   final response = await http.get(apiUrl.resolve('card/$id'));
-  if (response.statusCode != 200) {
-    throw StatusCodeException(200);
+  if (response.statusCode != StatusCode.OK) {
+    throw StatusCodeException(response.statusCode);
   }
   return Card.fromRes(jsonDecode(response.body), id);
 }
@@ -78,14 +79,14 @@ Future<void> patchCard(CardPatch cardPatch, String id) async {
     },
     body: jsonEncode(cardPatch.toReq()),
   );
-  if (response.statusCode != 200) {
-    throw StatusCodeException(200);
+  if (response.statusCode != StatusCode.OK) {
+    throw StatusCodeException(response.statusCode);
   }
 }
 
 Future<void> deleteCard(String id) async {
   final response = await http.delete(apiUrl.resolve('card/$id'));
-  if (response.statusCode != 200) {
-    throw StatusCodeException(200);
+  if (response.statusCode != StatusCode.OK) {
+    throw StatusCodeException(response.statusCode);
   }
 }

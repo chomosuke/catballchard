@@ -7,6 +7,11 @@ class StatusCodeException implements Exception {
   StatusCodeException(this.statusCode);
 }
 
+class StatusCodeError extends Error {
+  final int statusCode;
+  StatusCodeError(this.statusCode);
+}
+
 Future<void> statusCodeAlert(int statusCode, String? title, String? content) {
   return showDialog(
     context: getContext()!,

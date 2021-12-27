@@ -1,156 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:flex_with_main_child/flex_with_main_child.dart';
-import '../card_container.dart';
-import 'package:provider/provider.dart';
-import '../lifecycle.dart' as lifecycle;
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:frontend/actions/reducer.dart';
+import 'package:frontend/card_container.dart';
+import 'package:frontend/catballchard/dialogs/warning_dialog.dart';
+import 'package:frontend/future_builder.dart';
+import 'package:frontend/states/state.dart' as state;
+import 'package:http/http.dart';
 
-class Name extends StatefulWidget {
-  final lifecycle.Card _name;
-  const Name({Key? key, required lifecycle.Card name})
-      : _name = name,
-        super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _NameState();
-}
-
-class _NameState extends State<Name> {
-  void markNeedsBuild() => setState(() {});
-
-  @override
-  void initState() {
-    super.initState();
-    widget._name.addListener(markNeedsBuild);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    widget._name.removeListener(markNeedsBuild);
-  }
+class Card extends StatelessWidget {
+  final state.Card card;
+  const Card({Key? key, required this.card}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    void onDelete() {
-      Provider.of<lifecycle.All>(context, listen: false).delete(widget._name);
+    void showDelete() {
+      showDialog(
+        context: context,
+        builder: (context) => WarningDialog(
+          title: 'Delete Card',
+          description:
+              'This will remove the card \npermanantely from this website.',
+          callback: () => StoreProvider.of<Future<state.State>>(context)
+              .dispatch(DeleteCard(card)),
+        ),
+      );
     }
 
-    final deleteDialog = AlertDialog(
-      shape: const RoundedRectangleBorder(
+    final deleteButton = Container(
+      margin: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        color: Color.fromARGB(64, 255, 255, 255),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
-      title: const Text('Delete Card'),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: const <Widget>[
-            Text('This will remove the card \npermanantely from this website.'),
-          ],
-        ),
+      child: IconButton(
+        onPressed: showDelete,
+        padding: const EdgeInsets.all(0),
+        iconSize: 32,
+        icon: const Icon(Icons.delete_forever_outlined),
       ),
-      actions: <Widget>[
-        TextButton(
-          child: const Text('Cancel'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        TextButton(
-          child: const Text(
-            'Confirm',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onPressed: () {
-            onDelete();
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
     );
 
-    final card = CardContainer(
-      padding: 10,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Stack(
-              alignment: Alignment.topLeft,
-              children: [
-                Container(
-                  alignment: Alignment.topCenter,
-                  child: Image.network(
-                    widget._name.imageUrl,
-                    filterQuality: FilterQuality.medium,
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(64, 255, 255, 255),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: IconButton(
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => deleteDialog,
+    final owned = card.section.owned;
+
+    return MFutureBuilder<state.CardData>(
+      future: card.data,
+      builder: (context, data) => CardContainer(
+        padding: 10,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Stack(
+                alignment: Alignment.topLeft,
+                children: [
+                  Container(
+                    alignment: Alignment.topCenter,
+                    child: Image.network(
+                      data.imageUrl,
+                      filterQuality: FilterQuality.medium,
                     ),
-                    padding: const EdgeInsets.all(0),
-                    iconSize: 32,
-                    icon: const Icon(Icons.delete_forever_outlined),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(15, 5, 15, 10),
-            child: SelectableText(
-              widget._name.name,
-              style: const TextStyle(fontSize: 20),
-            ),
-          )
-        ],
-      ),
-    );
-
-    final dialog = GestureDetector(
-      onTap: () {
-        Navigator.of(context).pop();
-      },
-      child: Center(
-        child: ColumnWithMainChild(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainChild: Flexible(
-            child: Image.network(
-              widget._name.imageUrl,
-              filterQuality: FilterQuality.medium,
-            ),
-          ),
-          childrenBelow: [
-            Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              color: const Color.fromARGB(64, 255, 255, 255),
-              child: SelectableText(
-                widget._name.name,
-                style: const TextStyle(
-                  fontSize: 32,
-                ),
+                  if (owned) deleteButton,
+                ],
               ),
             ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(15, 5, 15, 10),
+              child: SelectableText(
+                data.description,
+                style: const TextStyle(fontSize: 20),
+              ),
+            )
           ],
         ),
       ),
-    );
-
-    return InkWell(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) => dialog,
-        );
-      },
-      child: card,
     );
   }
 }

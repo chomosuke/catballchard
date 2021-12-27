@@ -1,18 +1,22 @@
 import 'dart:convert';
-import 'package:frontend/http/status_code_handling.dart';
-
+import 'status_code_handling.dart';
+import 'package:http_status_code/http_status_code.dart';
 import 'url.dart';
 import 'package:http/http.dart' as http;
 
+export 'account.dart';
+export 'card.dart';
+export 'section.dart';
+
 class All {
-  late final List<String> otherSectionIds;
-  late final List<String> ownedSectionIds;
-  All.fromRes(Map<String, dynamic> allRes, Map<String, dynamic> ownedRes) {
-    final allIds = List<String>.from(allRes['ids']);
-    ownedSectionIds = List<String>.from(ownedRes['ids']);
-    final allSet = Set.from(allIds);
-    final ownedSet = Set.from(ownedSectionIds);
-    otherSectionIds = List.from(allSet.difference(ownedSet));
+  late final List<String> allSectionIds;
+  late final Set<String> ownedSectionIds;
+  All.fromRes(
+    Map<String, dynamic> allRes,
+    Map<String, dynamic> ownedRes,
+  ) {
+    allSectionIds = List<String>.from(allRes['ids']);
+    ownedSectionIds = Set<String>.from(ownedRes['ids']);
   }
 }
 
@@ -21,13 +25,20 @@ Future<All> getAll() async {
     http.get(apiUrl.resolve('section/all')),
     http.get(apiUrl.resolve('section/owned')),
   ]);
-  for (final response in responses) {
-    if (response.statusCode != 200) {
-      throw StatusCodeException(200);
-    }
+  if (responses[0].statusCode != StatusCode.OK) {
+    throw StatusCodeError(responses[0].statusCode);
   }
-  return All.fromRes(
-    jsonDecode(responses[0].body),
-    jsonDecode(responses[1].body),
-  );
+  if (responses[1].statusCode == StatusCode.OK) {
+    return All.fromRes(
+      jsonDecode(responses[0].body),
+      jsonDecode(responses[1].body),
+    );
+  } else if (responses[1].statusCode == StatusCode.UNAUTHORIZED) {
+    return All.fromRes(
+      jsonDecode(responses[0].body),
+      <String, dynamic>{'ids': []},
+    );
+  } else {
+    throw StatusCodeError(responses[1].statusCode);
+  }
 }
