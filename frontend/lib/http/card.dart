@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'account.dart';
 import 'package:http_status_code/http_status_code.dart';
 import 'status_code_handling.dart';
 import 'url.dart';
@@ -22,7 +24,8 @@ Future<String> postCard(NewCard newCard) async {
   final response = await http.post(
     apiUrl.resolve('card'),
     headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader: await getToken(),
     },
     body: jsonEncode(newCard.toReq()),
   );
@@ -75,7 +78,8 @@ Future<void> patchCard(CardPatch cardPatch, String id) async {
   final response = await http.patch(
     apiUrl.resolve('card/$id'),
     headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader: await getToken(),
     },
     body: jsonEncode(cardPatch.toReq()),
   );
@@ -85,7 +89,12 @@ Future<void> patchCard(CardPatch cardPatch, String id) async {
 }
 
 Future<void> deleteCard(String id) async {
-  final response = await http.delete(apiUrl.resolve('card/$id'));
+  final response = await http.delete(
+    apiUrl.resolve('card/$id'),
+    headers: <String, String>{
+      HttpHeaders.authorizationHeader: await getToken(),
+    },
+  );
   if (response.statusCode != StatusCode.OK) {
     throw StatusCodeException(response.statusCode);
   }

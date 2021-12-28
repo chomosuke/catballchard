@@ -11,8 +11,6 @@ use crate::db::{DB, User};
 
 const DURATION: u128 = 2629800000; // one month
 
-const START_LEN: usize = "Basic ".len();
-
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for User {
     type Error = ();
@@ -24,7 +22,7 @@ impl<'r> FromRequest<'r> for User {
             return Failure((Status::Unauthorized, ()));
         }
         let token = magic_crypt.decrypt_base64_to_string(
-            &token.unwrap()[START_LEN..],
+            &token.unwrap(),
         );
         if token.is_err() {
             return Failure((Status::Unauthorized, ()));

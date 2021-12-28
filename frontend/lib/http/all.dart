@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
+import 'account.dart';
+
 import 'status_code_handling.dart';
 import 'package:http_status_code/http_status_code.dart';
 import 'url.dart';
@@ -23,7 +26,12 @@ class All {
 Future<All> getAll() async {
   final responses = await Future.wait([
     http.get(apiUrl.resolve('section/all')),
-    http.get(apiUrl.resolve('section/owned')),
+    http.get(
+      apiUrl.resolve('section/owned'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: await getToken(),
+      },
+    ),
   ]);
   if (responses[0].statusCode != StatusCode.OK) {
     throw StatusCodeError(responses[0].statusCode);
