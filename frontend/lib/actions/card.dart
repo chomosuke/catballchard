@@ -10,7 +10,7 @@ class AddCard extends Action {
   @override
   Future<State> act(Future<State> state) async {
     final newCard = Card.post(imageUrl, description, section);
-    final newSection = Section.replaceCard(section, newCard);
+    final newSection = Section.addCard(section, newCard);
     return State.replaceSection(await state, newSection);
   }
 }
