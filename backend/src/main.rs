@@ -26,6 +26,8 @@ struct Args {
     secret_key: Option<String>,
 }
 
+static mut DEBUG: bool = false;
+
 #[rocket::launch]
 async fn rocket() -> _ {
     let args = Args::from_args();
@@ -78,6 +80,9 @@ async fn rocket() -> _ {
             .allow_credentials(true)
             .to_cors().unwrap(),
         );
+        unsafe {
+            DEBUG = true;
+        }
     }
 
     // launch

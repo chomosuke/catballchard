@@ -1,5 +1,5 @@
-use rocket::{post, serde::{json::Json, Deserialize}, State, http::{Status, CookieJar, Cookie}};
-use crate::{db::{DB, User}, guard::{TOKEN, get_token}};
+use rocket::{post, serde::{json::Json, Deserialize}, State, http::{Status, CookieJar}};
+use crate::{db::{DB, User}, guard::get_token};
 use mongodb::bson::doc;
 
 #[derive(Deserialize)]
@@ -19,9 +19,6 @@ pub async fn register(db: &State<DB>, cookie_jar: &CookieJar<'_>, req: Json<Req>
         username,
         password,
     }, None).await.unwrap().inserted_id.as_object_id().unwrap();
-    cookie_jar.add_private(Cookie::new(
-        TOKEN,
-        get_token(id)
-    ));
+    cookie_jar.add_private(get_token(id));
     return Status::Ok;
 }

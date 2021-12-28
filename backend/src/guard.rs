@@ -1,12 +1,12 @@
 use rocket::{
-    http::Status,
+    http::{Cookie, Status, SameSite},
     request::{Request, FromRequest, Outcome},
     outcome::Outcome::{Failure, Success},
 };
 use mongodb::bson::{oid::ObjectId, doc};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use crate::db::{DB, User};
+use crate::{db::{DB, User}, DEBUG};
 
 const DURATION: u128 = 2629800000; // one month
 
@@ -54,9 +54,18 @@ fn get_id_time(token: &str) -> Option<Vec<&str>> {
     }
 }
 
-pub fn get_token(user_id: ObjectId) -> String {
+pub fn get_token(user_id: ObjectId) -> Cookie<'static> {
     let time = get_time();
-    return format!("{} {}", user_id, time);
+    let mut cookie = Cookie::new(
+        TOKEN,
+        format!("{} {}", user_id, time),
+    );
+    unsafe {
+        if DEBUG {
+            cookie.set_same_site(SameSite::None);
+        }
+    }
+    return cookie;
 }
 
 fn get_time() -> u128 {

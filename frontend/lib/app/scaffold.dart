@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:frontend/actions/account.dart';
+import 'forms/add_card.dart';
 import 'forms/add_section.dart';
 import 'forms/sign_in_up.dart';
 import 'package:frontend/helpers/as_non_null.dart';
@@ -153,6 +154,19 @@ class _MScaffoldState extends State<MScaffold> {
               ),
             ],
           ),
+          floatingActionButton:
+              data.nullable != null && selected != null && selected!.owned
+                  ? FloatingActionButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AddCard(section: selected!),
+                        );
+                      },
+                      tooltip: 'Add new card',
+                      child: const Icon(Icons.add),
+                    )
+                  : null,
         );
       },
     );

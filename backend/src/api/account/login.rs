@@ -1,5 +1,5 @@
-use rocket::{post, serde::{json::Json, Deserialize}, State, http::{Status, CookieJar, Cookie}};
-use crate::{db::DB, guard::{TOKEN, get_token}};
+use rocket::{post, serde::{json::Json, Deserialize}, State, http::{Status, CookieJar}};
+use crate::{db::DB, guard::get_token};
 use mongodb::bson::doc;
 
 #[derive(Deserialize)]
@@ -16,10 +16,9 @@ pub async fn login(db: &State<DB>, cookie_jar: &CookieJar<'_>, req: Json<Req>) -
     }, None).await.unwrap();
     match user {
         Some(user) => {
-            cookie_jar.add_private(Cookie::new(
-                TOKEN,
+            cookie_jar.add_private(
                 get_token(user._id.unwrap())
-            ));
+            );
             return Status::Ok;
         },
         None => return Status::Unauthorized,
