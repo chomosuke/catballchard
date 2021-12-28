@@ -37,7 +37,7 @@ class State {
     if (index == null) {
       throw ArgumentError(
         'section with sectionId: $id not found',
-        'section',
+        'id',
       );
     }
     return index;

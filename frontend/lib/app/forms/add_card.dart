@@ -78,7 +78,7 @@ class _AddCardState extends State<AddCard> {
                 onPressed: imageUrl == null
                     ? null
                     : () async {
-                        StoreProvider.of(context).dispatch(
+                        StoreProvider.of<Future<state.State>>(context).dispatch(
                           action.AddCard(
                             await imageUrl!,
                             description,

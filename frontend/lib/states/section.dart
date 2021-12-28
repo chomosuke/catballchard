@@ -33,8 +33,8 @@ class Section {
     final index = (await indexes)[id];
     if (index == null) {
       throw ArgumentError(
-        'section with sectionId: $id not found',
-        'section',
+        'card with cardId: $id not found',
+        'id',
       );
     }
     return index;
