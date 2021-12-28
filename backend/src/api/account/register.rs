@@ -1,4 +1,5 @@
-use rocket::{post, serde::{json::Json, Deserialize}, State, http::{Status, CookieJar}};
+use magic_crypt::MagicCrypt256;
+use rocket::{post, serde::{json::Json, Deserialize, Serialize}, State, http::Status};
 use crate::{db::{DB, User}, guard::get_token};
 use mongodb::bson::doc;
 
@@ -8,10 +9,15 @@ pub struct Req {
     password: String,
 }
 
+#[derive(Serialize)]
+pub struct Res {
+    auth_token: String,
+}
+
 #[post("/register", data = "<req>")]
-pub async fn register(db: &State<DB>, cookie_jar: &CookieJar<'_>, req: Json<Req>) -> Status {
+pub async fn register(db: &State<DB>, req: Json<Req>, magic_crypt: &State<MagicCrypt256>) -> Result<Json<Res>, Status> {
     if db.users.find_one(doc! {"username": &req.username}, None).await.unwrap().is_some() {
-        return Status::Conflict;
+        return Err(Status::Conflict);
     }
     let Req { username, password } = req.into_inner();
     let id = db.users.insert_one(User {
@@ -19,6 +25,7 @@ pub async fn register(db: &State<DB>, cookie_jar: &CookieJar<'_>, req: Json<Req>
         username,
         password,
     }, None).await.unwrap().inserted_id.as_object_id().unwrap();
-    cookie_jar.add_private(get_token(id));
-    return Status::Ok;
+    return Ok(Json(Res {
+        auth_token: get_token(id, magic_crypt.inner()),
+    }));
 }

@@ -1,29 +1,36 @@
+use magic_crypt::{MagicCrypt256, MagicCryptTrait};
 use rocket::{
-    http::{Cookie, Status, SameSite},
+    http::Status,
     request::{Request, FromRequest, Outcome},
     outcome::Outcome::{Failure, Success},
 };
 use mongodb::bson::{oid::ObjectId, doc};
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use crate::{db::{DB, User}, DEBUG};
+use crate::db::{DB, User};
 
 const DURATION: u128 = 2629800000; // one month
 
-pub const TOKEN: &str = "token";
+const START_LEN: usize = "Basic ".len();
 
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for User {
     type Error = ();
 
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-        let token = req.cookies().get_private(TOKEN);
+        let magic_crypt = req.rocket().state::<MagicCrypt256>().unwrap();
+        let token = req.headers().get_one("Authorization");
         if token.is_none() {
             return Failure((Status::Unauthorized, ()));
         }
+        let token = magic_crypt.decrypt_base64_to_string(
+            &token.unwrap()[START_LEN..],
+        );
+        if token.is_err() {
+            return Failure((Status::Unauthorized, ()));
+        }
         let token = token.unwrap();
-        let token = token.value();
-        let id_time = get_id_time(token);
+        let id_time = get_id_time(&token);
         if id_time.is_none() {
             return Failure((Status::Unauthorized, ()));
         }
@@ -54,18 +61,9 @@ fn get_id_time(token: &str) -> Option<Vec<&str>> {
     }
 }
 
-pub fn get_token(user_id: ObjectId) -> Cookie<'static> {
+pub fn get_token(user_id: ObjectId, magic_crypt: &MagicCrypt256) -> String {
     let time = get_time();
-    let mut cookie = Cookie::new(
-        TOKEN,
-        format!("{} {}", user_id, time),
-    );
-    unsafe {
-        if DEBUG {
-            cookie.set_same_site(SameSite::None);
-        }
-    }
-    return cookie;
+    return magic_crypt.encrypt_str_to_base64(format!("{} {}", user_id, time));
 }
 
 fn get_time() -> u128 {

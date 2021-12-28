@@ -1,5 +1,6 @@
+use magic_crypt::{self, new_magic_crypt};
 use rocket::{fs::FileServer, Config, routes};
-use rocket_cors::{CorsOptions, AllowedOrigins};
+use rocket_cors::CorsOptions;
 use std::net::IpAddr;
 use structopt::StructOpt;
 use api::*;
@@ -23,10 +24,8 @@ struct Args {
     connection_string: String,
 
     #[structopt(short, long)]
-    secret_key: Option<String>,
+    secret_key: String,
 }
-
-static mut DEBUG: bool = false;
 
 #[rocket::launch]
 async fn rocket() -> _ {
@@ -39,9 +38,6 @@ async fn rocket() -> _ {
     }
     if args.address.is_some() {
         config = config.merge(("address", args.address.unwrap()));
-    }
-    if args.secret_key.is_some() {
-        config = config.merge(("secret_key", args.secret_key.unwrap()))
     }
 
     // initialize the server
@@ -62,27 +58,20 @@ async fn rocket() -> _ {
         ])
         .mount("/api", routes![
             account::login,
-            account::logout,
             account::patch,
             account::register,
             account::username,
         ])
         .mount("/", FileServer::from("../web_build"))
         .manage(db::get_db(&args.connection_string).await
-            .expect("Can't connect to database."));
+            .expect("Can't connect to database."))
+        .manage(
+            new_magic_crypt!(args.secret_key, 256), // = ase256
+        );
 
     // if debug mode, allow CORS
     if args.debug {
-        server = server.attach(
-            CorsOptions::default()
-            .send_wildcard(false)
-            .allowed_origins(AllowedOrigins::some_regex(&["^http://localhost"]))
-            .allow_credentials(true)
-            .to_cors().unwrap(),
-        );
-        unsafe {
-            DEBUG = true;
-        }
+        server = server.attach(CorsOptions::default().to_cors().unwrap());
     }
 
     // launch

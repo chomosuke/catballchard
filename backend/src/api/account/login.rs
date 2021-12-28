@@ -1,4 +1,5 @@
-use rocket::{post, serde::{json::Json, Deserialize}, State, http::{Status, CookieJar}};
+use magic_crypt::MagicCrypt256;
+use rocket::{post, serde::{json::Json, Deserialize, Serialize}, State, http::Status};
 use crate::{db::DB, guard::get_token};
 use mongodb::bson::doc;
 
@@ -8,19 +9,23 @@ pub struct Req {
     password: String
 }
 
+#[derive(Serialize)]
+pub struct Res {
+    auth_token: String,
+}
+
 #[post("/login", data = "<req>")]
-pub async fn login(db: &State<DB>, cookie_jar: &CookieJar<'_>, req: Json<Req>) -> Status {
+pub async fn login(db: &State<DB>, req: Json<Req>, magic_crypt: &State<MagicCrypt256>) -> Result<Json<Res>, Status> {
     let user = db.users.find_one(doc! {
         "username": &req.username,
         "password": &req.password
     }, None).await.unwrap();
     match user {
         Some(user) => {
-            cookie_jar.add_private(
-                get_token(user._id.unwrap())
-            );
-            return Status::Ok;
+            return Ok(Json(Res {
+                auth_token: get_token(user._id.unwrap(), magic_crypt.inner())
+            }));
         },
-        None => return Status::Unauthorized,
+        None => return Err(Status::Unauthorized),
     };
 }

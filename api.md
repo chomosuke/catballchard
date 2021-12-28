@@ -9,7 +9,7 @@
 # CRUD for card
 
 ## POST `/card`
-- request: cookies
+- request: auth token
 ```
 {
     image_url: string,
@@ -36,7 +36,7 @@
 ```
 
 ## PATCH `/card/<id>`
-- request: cookies
+- request: auth token
 ```
 {
     image_url?: string,
@@ -47,13 +47,13 @@
 - response: None
 
 ## DELETE `/card/<id>`
-- request: cookies
+- request: auth token
 - response: None
 
 # CRUD for section
 
 ## POST `/section`
-- request: cookies
+- request: auth token
 ```
 {
     name: string,
@@ -77,7 +77,7 @@
 ```
 
 ## PATCH `/section/<id>`
-- request: cookies
+- request: auth token
 ```
 {
     name: string
@@ -85,7 +85,7 @@
 ```
 
 ## DELETE `/section/<id>`
-- request: cookies
+- request: auth token
 - response: None
 
 # fetching sections
@@ -100,7 +100,7 @@
 ```
 
 ## GET `/section/owned`
-- request: cookies
+- request: auth token
 - response:
 ```
 {
@@ -118,7 +118,12 @@
     password: string,
 }
 ```
-- response: cookies
+- response:
+```
+{
+    auth_token: string,
+}
+```
 
 ## POST `/register`
 - request:
@@ -128,14 +133,15 @@
     password: string,
 }
 ```
-- response: cookies
-
-## POST `/logout`
-- request: None
-- response: delete cookies
+- response:
+```
+{
+    auth_token: string,
+}
+```
 
 ## PATCH `/account`
-- request: cookies
+- request: auth token
 ```
 {
     username?: string,
@@ -145,7 +151,7 @@
 - response: None
 
 ## GET `/username`
-- request: cookies
+- request: auth token
 - response: 
 ```
 {
