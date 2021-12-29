@@ -45,28 +45,29 @@ class _AddCardState extends State<AddCard> {
         borderRadius: BorderRadius.circular(padding),
       ),
       child: Container(
-        width: 300,
+        height: 600,
+        width: 500,
         margin: const EdgeInsets.all(padding),
         child: Column(
           children: [
             Expanded(
-              child: Container(
-                alignment: Alignment.topCenter,
-                child: imageUrl == null
-                    ? IconButton(
-                        onPressed: onAdd,
-                        tooltip: 'Add Image',
-                        iconSize: 100,
-                        icon: const Icon(Icons.add),
-                      )
-                    : MFutureBuilder<String>(
+              child: imageUrl == null
+                  ? IconButton(
+                      onPressed: onAdd,
+                      tooltip: 'Add Image',
+                      iconSize: 100,
+                      icon: const Icon(Icons.add),
+                    )
+                  : Container(
+                      alignment: Alignment.topCenter,
+                      child: MFutureBuilder<String>(
                         future: imageUrl!,
                         builder: (context, data) => Image.network(
                           data,
                           filterQuality: FilterQuality.medium,
                         ),
                       ),
-              ),
+                    ),
             ),
             TextField(
               decoration: const InputDecoration(labelText: 'description'),
@@ -74,6 +75,7 @@ class _AddCardState extends State<AddCard> {
                 description = value;
               },
             ),
+            SizedBox.fromSize(size: const Size(0, 25)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
