@@ -78,7 +78,10 @@ class Section {
         id = http.postSection(http.NewSection(name));
 
   Section.patch(Section previous, String name)
-      : data = (() async => SectionData(name, (await previous.data).cards))(),
+      : data = (() async {
+          http.patchSection(http.SectionPatch(name), await previous.id);
+          return SectionData(name, (await previous.data).cards);
+        })(),
         owned = previous.owned,
         id = previous.id;
 

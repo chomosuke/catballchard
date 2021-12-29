@@ -18,7 +18,7 @@ class WarningDialog extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       title: Text(title),
-      content: Text(description),
+      content: SizedBox(width: 150, child: Text(description)),
       actions: <Widget>[
         TextButton(
           child: const Text('Cancel'),
