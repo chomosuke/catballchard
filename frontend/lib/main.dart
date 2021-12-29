@@ -11,10 +11,10 @@ import 'package:frontend/states/state.dart' as state;
 final _navigatorKey = GlobalKey<NavigatorState>();
 BuildContext? getContext() => _navigatorKey.currentContext;
 
-final storage = const FlutterSecureStorage();
+const storage = FlutterSecureStorage();
 
 void main() {
-  debugPaintSizeEnabled = true;
+  // debugPaintSizeEnabled = true;
   final store = Store<Future<state.State>>(
     (state, action) => reducer(state, action),
     initialState: Future.value(state.State.get()),

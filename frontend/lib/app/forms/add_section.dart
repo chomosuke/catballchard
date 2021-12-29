@@ -8,32 +8,47 @@ class AddSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double padding = 25;
     final controller = TextEditingController();
     return Dialog(
-      child: Column(
-        children: [
-          TextField(
-            decoration: const InputDecoration(
-              labelText: 'name',
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(padding),
+      ),
+      child: Container(
+        height: 150,
+        width: 300,
+        margin: const EdgeInsets.only(left: padding, right: padding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            TextField(
+              decoration: const InputDecoration(
+                labelText: 'name',
+              ),
+              controller: controller,
             ),
-            controller: controller,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              StoreProvider.of<Future<state.State>>(context).dispatch(
-                action.AddSection(controller.text),
-              );
-              Navigator.of(context).pop();
-            },
-            child: const Text('Add Section'),
-          ),
-          OutlinedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Cancel'),
-          ),
-        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    StoreProvider.of<Future<state.State>>(context).dispatch(
+                      action.AddSection(controller.text),
+                    );
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Confirm'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
