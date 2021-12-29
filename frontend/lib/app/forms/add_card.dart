@@ -8,8 +8,8 @@ import 'package:frontend/actions/reducer.dart' as action;
 import 'package:mime/mime.dart';
 
 class AddCard extends StatefulWidget {
-  state.Section section;
-  AddCard({Key? key, required this.section}) : super(key: key);
+  final state.Section section;
+  const AddCard({Key? key, required this.section}) : super(key: key);
 
   @override
   State<AddCard> createState() => _AddCardState();
