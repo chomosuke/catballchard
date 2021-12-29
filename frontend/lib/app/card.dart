@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:frontend/actions/reducer.dart';
+import 'package:frontend/actions/reducer.dart' as action;
+import 'package:frontend/app/forms/edit_card.dart';
 import 'package:frontend/helpers/card_container.dart';
+import 'package:frontend/helpers/icon_button.dart';
 import 'package:frontend/helpers/warning_dialog.dart';
 import 'package:frontend/helpers/future_builder.dart';
 import 'package:frontend/states/state.dart' as state;
@@ -12,31 +14,28 @@ class Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void showDelete() {
-      showDialog(
-        context: context,
-        builder: (context) => WarningDialog(
-          title: 'Delete Card',
-          description:
-              'This will remove the card \npermanantely from this website.',
-          callback: () => StoreProvider.of<Future<state.State>>(context)
-              .dispatch(DeleteCard(card)),
-        ),
-      );
-    }
+    final deleteButton = MIconButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) => WarningDialog(
+            title: 'Delete Card',
+            description:
+                'This will remove the card \npermanantely from this website.',
+            callback: () => StoreProvider.of<Future<state.State>>(context)
+                .dispatch(action.DeleteCard(card)),
+          ),
+        );
+      },
+      icon: const Icon(Icons.delete_forever_outlined),
+    );
 
-    final deleteButton = Container(
-      margin: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(64, 255, 255, 255),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: IconButton(
-        onPressed: showDelete,
-        padding: const EdgeInsets.all(0),
-        iconSize: 32,
-        icon: const Icon(Icons.delete_forever_outlined),
-      ),
+    final editButton = MIconButton(
+      onPressed: () {
+        showDialog(
+            context: context, builder: (context) => EditCard(card: card));
+      },
+      icon: const Icon(Icons.edit),
     );
 
     final owned = card.section.owned;
@@ -59,7 +58,14 @@ class Card extends StatelessWidget {
                       filterQuality: FilterQuality.medium,
                     ),
                   ),
-                  if (owned) deleteButton,
+                  if (owned)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        deleteButton,
+                        editButton,
+                      ],
+                    ),
                 ],
               ),
             ),

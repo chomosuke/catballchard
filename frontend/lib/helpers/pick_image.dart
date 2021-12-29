@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:file_picker/file_picker.dart';
 import 'package:image/image.dart';
 import 'package:isolated_worker/js_isolated_worker.dart';
+import 'package:mime/mime.dart';
 
 // simply interface into the webworker.
 Future<String> imageToDataUrl(
@@ -29,4 +31,21 @@ Future<String> imageToDataUrl(
       return 'data:' + mimeType + ';base64,' + base64UrlEncode(bytes);
     },
   );
+}
+
+Future<Future<String>?> pickImage() async {
+  FilePickerResult? result =
+      await FilePicker.platform.pickFiles(type: FileType.image);
+
+  if (result == null) {
+    // User canceled the picker
+    return null;
+  }
+
+  List<int> bytes = result.files.single.bytes!;
+  String mimeType = lookupMimeType(result.files.single.name)!;
+  const sizeLimit = 262144;
+
+  // return automatically await, we wrap another future to get around this
+  return Future.value(imageToDataUrl(bytes, mimeType, sizeLimit));
 }

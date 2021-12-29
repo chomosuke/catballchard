@@ -87,7 +87,8 @@ class _MScaffoldState extends State<MScaffold> {
                 IconButton(
                   onPressed: () {
                     showDialog(
-                        context: context, builder: (context) => AddSection());
+                        context: context,
+                        builder: (context) => const AddSection());
                   },
                   icon: const Icon(Icons.add),
                 ),

@@ -1,11 +1,9 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:frontend/helpers/future_builder.dart';
-import 'package:frontend/helpers/image_to_data_url.dart';
+import 'package:frontend/helpers/pick_image.dart';
 import 'package:frontend/states/state.dart' as state;
 import 'package:frontend/actions/reducer.dart' as action;
-import 'package:mime/mime.dart';
 
 class AddCard extends StatefulWidget {
   final state.Section section;
@@ -18,23 +16,6 @@ class AddCard extends StatefulWidget {
 class _AddCardState extends State<AddCard> {
   Future<String>? imageUrl;
   String description = '';
-  void onAdd() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.image);
-
-    if (result == null) {
-      // User canceled the picker
-      return null;
-    }
-
-    List<int> bytes = result.files.single.bytes!;
-    String mimeType = lookupMimeType(result.files.single.name)!;
-    const sizeLimit = 262144;
-
-    setState(() {
-      imageUrl = imageToDataUrl(bytes, mimeType, sizeLimit);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +34,14 @@ class _AddCardState extends State<AddCard> {
             Expanded(
               child: imageUrl == null
                   ? IconButton(
-                      onPressed: onAdd,
+                      onPressed: () async {
+                        final img = await pickImage();
+                        if (img != null) {
+                          setState(() {
+                            imageUrl = img;
+                          });
+                        }
+                      },
                       tooltip: 'Add Image',
                       iconSize: 100,
                       icon: const Icon(Icons.add),
