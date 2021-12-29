@@ -4,7 +4,6 @@ import 'package:frontend/actions/account.dart';
 import 'forms/add_card.dart';
 import 'forms/add_section.dart';
 import 'forms/sign_in_up.dart';
-import 'package:frontend/helpers/as_non_null.dart';
 import 'package:frontend/helpers/warning_dialog.dart';
 import 'section.dart';
 import 'package:frontend/http/url.dart';
@@ -98,17 +97,17 @@ class _MScaffoldState extends State<MScaffold> {
       ),
     );
 
-    return MFutureBuilder<AsNonNull<String>>(
-      future: (() async => AsNonNull(await widget.currentState.username))(),
-      builder: (context, data) {
+    return MFutureBuilder<String?>(
+      future: widget.currentState.username,
+      nullableBuilder: (context, data) {
         return Scaffold(
           appBar: AppBar(
             leading: Image.network(baseUrl.resolve('favicon.ico').toString()),
             title: const Text('CatBallChard'),
             leadingWidth: 56 / 210 * 240,
-            actions: data.nullable != null
+            actions: data != null
                 ? [
-                    Center(child: Text('Hello ${data.nullable!}!')),
+                    Center(child: Text('Hello $data!')),
                     TextButton(
                       onPressed: () {
                         showDialog(
@@ -155,7 +154,7 @@ class _MScaffoldState extends State<MScaffold> {
             ],
           ),
           floatingActionButton:
-              data.nullable != null && selected != null && selected!.owned
+              data != null && selected != null && selected!.owned
                   ? FloatingActionButton(
                       onPressed: () {
                         showDialog(

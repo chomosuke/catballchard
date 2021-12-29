@@ -38,60 +38,71 @@ class _AddCardState extends State<AddCard> {
 
   @override
   Widget build(BuildContext context) {
+    const double padding = 25;
+
     return Dialog(
-      child: Column(
-        children: [
-          Expanded(
-            child: Container(
-              alignment: Alignment.topCenter,
-              child: imageUrl == null
-                  ? IconButton(
-                      onPressed: onAdd,
-                      tooltip: 'Add Image',
-                      icon: const Icon(Icons.add, size: 100),
-                    )
-                  : MFutureBuilder<String>(
-                      future: imageUrl!,
-                      builder: (context, data) => Image.network(
-                        data,
-                        filterQuality: FilterQuality.medium,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(padding),
+      ),
+      child: Container(
+        width: 300,
+        margin: const EdgeInsets.all(padding),
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                alignment: Alignment.topCenter,
+                child: imageUrl == null
+                    ? IconButton(
+                        onPressed: onAdd,
+                        tooltip: 'Add Image',
+                        iconSize: 100,
+                        icon: const Icon(Icons.add),
+                      )
+                    : MFutureBuilder<String>(
+                        future: imageUrl!,
+                        builder: (context, data) => Image.network(
+                          data,
+                          filterQuality: FilterQuality.medium,
+                        ),
                       ),
-                    ),
+              ),
             ),
-          ),
-          TextField(
-            decoration: const InputDecoration(labelText: 'description'),
-            onChanged: (value) {
-              description = value;
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: imageUrl == null
-                    ? null
-                    : () async {
-                        StoreProvider.of<Future<state.State>>(context).dispatch(
-                          action.AddCard(
-                            await imageUrl!,
-                            description,
-                            widget.section,
-                          ),
-                        );
-                        Navigator.of(context).pop();
-                      },
-                child: const Text('Confirm'),
-              ),
-            ],
-          )
-        ],
+            TextField(
+              decoration: const InputDecoration(labelText: 'description'),
+              onChanged: (value) {
+                description = value;
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: imageUrl == null
+                      ? null
+                      : () async {
+                          StoreProvider.of<Future<state.State>>(context)
+                              .dispatch(
+                            action.AddCard(
+                              await imageUrl!,
+                              description,
+                              widget.section,
+                            ),
+                          );
+                          Navigator.of(context).pop();
+                        },
+                  child: const Text('Confirm'),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

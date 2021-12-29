@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
 
 class MFutureBuilder<T> extends StatelessWidget {
-  final Future<T> _future;
-  final Widget Function(BuildContext context, T data) _builder;
-  const MFutureBuilder({
+  final Future<T> future;
+  final Widget Function(BuildContext context, T data)? builder;
+  final Widget Function(BuildContext context, T? data)? nullableBuilder;
+  MFutureBuilder({
     Key? key,
-    required Future<T> future,
-    required Widget Function(BuildContext context, T data) builder,
-  })  : _builder = builder,
-        _future = future,
-        super(key: key);
+    required this.future,
+    this.builder,
+    this.nullableBuilder,
+  }) : super(key: key) {
+    if (null is T) {
+      assert(builder == null && nullableBuilder != null);
+    } else {
+      assert(builder != null && nullableBuilder == null);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<T>(
-      future: _future,
+      future: future,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return _builder(context, snapshot.data!);
+        if (snapshot.connectionState == ConnectionState.done ||
+            snapshot.hasData) {
+          if (builder != null) {
+            return builder!(context, snapshot.data!);
+          } else {
+            return nullableBuilder!(context, snapshot.data);
+          }
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
