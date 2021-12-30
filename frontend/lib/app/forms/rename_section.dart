@@ -4,19 +4,30 @@ import 'package:frontend/helpers/future_builder.dart';
 import 'package:frontend/states/state.dart' as state;
 import 'package:frontend/actions/reducer.dart' as action;
 
-class RenameSection extends StatelessWidget {
+class RenameSection extends StatefulWidget {
   final state.Section section;
-  RenameSection({Key? key, required this.section}) : super(key: key);
+  const RenameSection({Key? key, required this.section}) : super(key: key);
+
+  @override
+  State<RenameSection> createState() => _RenameSectionState();
+}
+
+class _RenameSectionState extends State<RenameSection> {
+  TextEditingController? controller;
+
+  @override
+  void dispose() {
+    controller!.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MFutureBuilder(
-      future: section.data,
+    return MFutureBuilder<state.SectionData>(
+      future: widget.section.data,
       builder: _build,
     );
   }
-
-  TextEditingController? controller;
 
   Widget _build(BuildContext context, state.SectionData sectionData) {
     const double padding = 25;
@@ -52,7 +63,7 @@ class RenameSection extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     StoreProvider.of<Future<state.State>>(context).dispatch(
-                      action.EditSection(section, controller!.text),
+                      action.EditSection(widget.section, controller!.text),
                     );
                     Navigator.of(context).pop();
                   },

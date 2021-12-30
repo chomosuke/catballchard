@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:frontend/actions/account.dart';
+import 'package:frontend/app/forms/change_username.dart';
 import 'package:frontend/app/section_selector.dart';
 import 'forms/add_card.dart';
 import 'forms/sign_in_up.dart';
@@ -28,7 +29,7 @@ class _MScaffoldState extends State<MScaffold> {
   Widget build(BuildContext context) {
     return MFutureBuilder<String?>(
       future: widget.currentState.username,
-      nullableBuilder: (context, data) {
+      builder: (context, data) {
         return Scaffold(
           appBar: AppBar(
             leading: Image.network(baseUrl.resolve('favicon.ico').toString()),
@@ -55,7 +56,19 @@ class _MScaffoldState extends State<MScaffold> {
                         'Sign out',
                         style: TextStyle(color: Colors.white),
                       ),
-                    )
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const ChangeUsername(),
+                        );
+                      },
+                      child: const Text(
+                        'Change username',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ]
                 : [
                     TextButton(

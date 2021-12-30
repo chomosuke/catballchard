@@ -21,7 +21,7 @@ class Card extends StatelessWidget {
           builder: (context) => WarningDialog(
             title: 'Delete Card',
             description:
-                'This will remove the card\npermanantely from this website.',
+                'This will remove the card permanantely from this website.',
             callback: () => StoreProvider.of<Future<state.State>>(context)
                 .dispatch(action.DeleteCard(card)),
           ),

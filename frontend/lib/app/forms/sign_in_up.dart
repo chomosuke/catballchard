@@ -69,7 +69,7 @@ class _SignInUpState extends State<SignInUp> {
               passwordRepeatError = 'does not match!';
             } else {
               // then must be username conflict
-              usernameError = 'username already in use';
+              usernameError = 'username taken!';
             }
           }
         }

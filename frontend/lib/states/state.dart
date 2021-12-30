@@ -75,10 +75,10 @@ class State {
           final success = await http.patchAccount(
             http.AccountPatch(username, password),
           );
-          if (username == null || !success) {
-            await previous.username;
+          if (username != null && success) {
+            return username;
           } else {
-            username;
+            return await previous.username;
           }
         })();
 }
