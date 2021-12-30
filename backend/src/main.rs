@@ -1,5 +1,6 @@
+use std::time::Duration;
 use magic_crypt::{self, new_magic_crypt};
-use rocket::{fs::FileServer, Config, routes};
+use rocket::{fs::FileServer, Config, routes, fairing::AdHoc, tokio::time::sleep};
 use rocket_cors::CorsOptions;
 use std::net::IpAddr;
 use structopt::StructOpt;
@@ -69,9 +70,14 @@ async fn rocket() -> _ {
             new_magic_crypt!(args.secret_key, 256), // = ase256
         );
 
-    // if debug mode, allow CORS
+    // if debug mode, allow CORS and impose artificial delay
     if args.debug {
-        server = server.attach(CorsOptions::default().to_cors().unwrap());
+        server = server
+            .attach(CorsOptions::default().to_cors().unwrap())
+            .attach(AdHoc::on_request(
+                "Aritficial delay",
+                |_, _| Box::pin(sleep(Duration::from_millis(1000))),
+            ));
     }
 
     // launch
