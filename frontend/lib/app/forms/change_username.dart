@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:frontend/helpers/future_builder.dart';
 import 'package:frontend/states/state.dart' as state;
 import 'package:frontend/actions/reducer.dart' as action;
 
@@ -85,7 +84,9 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                               .dispatch(
                             action.AccountPatch(username: controller.text),
                           );
-                          attempted = true;
+                          setState(() {
+                            attempted = true;
+                          });
                         },
                   child: const Text('Confirm'),
                 ),

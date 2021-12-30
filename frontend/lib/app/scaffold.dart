@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:frontend/actions/account.dart';
+import 'package:frontend/app/forms/change_password.dart';
 import 'package:frontend/app/forms/change_username.dart';
 import 'package:frontend/app/section_selector.dart';
 import 'forms/add_card.dart';
@@ -27,17 +28,51 @@ class _MScaffoldState extends State<MScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return MFutureBuilder<String?>(
-      future: widget.currentState.username,
+    return MFutureBuilder<List<dynamic>>(
+      future: Future.wait([
+        widget.currentState.username,
+        widget.currentState.sections,
+      ]),
       builder: (context, data) {
+        final String? username = data[0];
+        final List<state.Section> sections = data[1];
+
+        if (!sections.contains(selected)) {
+          selected = null;
+        }
+
         return Scaffold(
           appBar: AppBar(
             leading: Image.network(baseUrl.resolve('favicon.ico').toString()),
             title: const Text('CatBallChard'),
             leadingWidth: 56 / 210 * 240,
-            actions: data != null
+            actions: username != null
                 ? [
-                    Center(child: Text('Hello $data!')),
+                    Center(child: Text('Hello $username!')),
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const ChangeUsername(),
+                        );
+                      },
+                      child: const Text(
+                        'Change username',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const ChangePassword(),
+                        );
+                      },
+                      child: const Text(
+                        'Change password',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                     TextButton(
                       onPressed: () {
                         showDialog(
@@ -54,18 +89,6 @@ class _MScaffoldState extends State<MScaffold> {
                       },
                       child: const Text(
                         'Sign out',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => const ChangeUsername(),
-                        );
-                      },
-                      child: const Text(
-                        'Change username',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -104,7 +127,7 @@ class _MScaffoldState extends State<MScaffold> {
             ],
           ),
           floatingActionButton:
-              data != null && selected != null && selected!.owned
+              username != null && selected != null && selected!.owned
                   ? FloatingActionButton(
                       onPressed: () {
                         showDialog(
