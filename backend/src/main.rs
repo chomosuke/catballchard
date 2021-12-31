@@ -76,7 +76,7 @@ async fn rocket() -> _ {
             .attach(CorsOptions::default().to_cors().unwrap())
             .attach(AdHoc::on_request(
                 "Aritficial delay",
-                |_, _| Box::pin(sleep(Duration::from_millis(1000))),
+                |_, _| Box::pin(sleep(Duration::from_millis(250))),
             ));
     }
 

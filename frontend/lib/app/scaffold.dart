@@ -49,49 +49,7 @@ class _MScaffoldState extends State<MScaffold> {
             actions: username != null
                 ? [
                     Center(child: Text('Hello $username!')),
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => const ChangeUsername(),
-                        );
-                      },
-                      child: const Text(
-                        'Change username',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => const ChangePassword(),
-                        );
-                      },
-                      child: const Text(
-                        'Change password',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => WarningDialog(
-                            title: 'Sign out',
-                            description: 'Are you sure?',
-                            callback: () {
-                              StoreProvider.of<Future<state.State>>(context)
-                                  .dispatch(Logout());
-                            },
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        'Sign out',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+                    popupAccountMenu(context),
                   ]
                 : [
                     TextButton(
@@ -141,6 +99,59 @@ class _MScaffoldState extends State<MScaffold> {
                   : null,
         );
       },
+    );
+  }
+
+  Widget popupAccountMenu(BuildContext context) {
+    const changeUsername = 1;
+    const changePassword = 2;
+    const signOut = 3;
+    return PopupMenuButton<int>(
+      onSelected: (value) {
+        switch (value) {
+          case changeUsername:
+            showDialog(
+              context: context,
+              builder: (context) => const ChangeUsername(),
+            );
+            break;
+          case changePassword:
+            showDialog(
+              context: context,
+              builder: (context) => const ChangePassword(),
+            );
+            break;
+          case signOut:
+            showDialog(
+              context: context,
+              builder: (context) => WarningDialog(
+                title: 'Sign out',
+                description: 'Are you sure?',
+                callback: () {
+                  StoreProvider.of<Future<state.State>>(context)
+                      .dispatch(Logout());
+                },
+              ),
+            );
+            break;
+          default:
+            throw Error();
+        }
+      },
+      itemBuilder: (context) => [
+        const PopupMenuItem(
+          child: Text('Change username'),
+          value: changeUsername,
+        ),
+        const PopupMenuItem(
+          child: Text('Change password'),
+          value: changePassword,
+        ),
+        const PopupMenuItem(
+          child: Text('Sign out'),
+          value: signOut,
+        ),
+      ],
     );
   }
 }

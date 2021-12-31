@@ -46,54 +46,58 @@ class SectionSelector extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   children: sections
                       .map<Widget>(
-                        (section) => Container(
-                          decoration: const BoxDecoration(
-                            border: Border.symmetric(vertical: BorderSide()),
-                          ),
-                          child: Row(
-                            children: [
-                              TextButton(
-                                onPressed: () => onSelect(section),
-                                child: MFutureBuilder<state.SectionData>(
-                                  future: section.data,
-                                  builder: (context, data) => Text(data.name),
+                        (section) => Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            InkWell(
+                              onTap: () => onSelect(section),
+                              child: MFutureBuilder<state.SectionData>(
+                                future: section.data,
+                                builder: (context, data) => Container(
+                                  padding: const EdgeInsets.all(16),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    data.name,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              if (section.owned)
-                                IconButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                          RenameSection(section: section),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.edit),
-                                ),
-                              if (section.owned)
-                                IconButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => WarningDialog(
-                                          title: 'Delete Section',
-                                          description:
-                                              'This will remove the section and all the cards belonging to it permanantely',
-                                          callback: () {
-                                            StoreProvider.of<
-                                                        Future<state.State>>(
-                                                    context)
-                                                .dispatch(
-                                              action.DeleteSection(section),
-                                            );
-                                          }),
-                                    );
-                                  },
-                                  icon:
-                                      const Icon(Icons.delete_forever_outlined),
-                                ),
-                            ],
-                          ),
+                            ),
+                            if (section.owned)
+                              IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        RenameSection(section: section),
+                                  );
+                                },
+                                icon: const Icon(Icons.edit),
+                              ),
+                            if (section.owned)
+                              IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => WarningDialog(
+                                        title: 'Delete Section',
+                                        description:
+                                            'This will remove the section and all the cards belonging to it permanantely',
+                                        callback: () {
+                                          StoreProvider.of<Future<state.State>>(
+                                                  context)
+                                              .dispatch(
+                                            action.DeleteSection(section),
+                                          );
+                                        }),
+                                  );
+                                },
+                                icon: const Icon(Icons.delete_forever_outlined),
+                              ),
+                          ],
                         ),
                       )
                       .toList(),
