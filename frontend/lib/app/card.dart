@@ -1,3 +1,4 @@
+import 'package:flex_with_main_child/flex_with_main_child.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:frontend/actions/reducer.dart' as action;
@@ -42,43 +43,83 @@ class Card extends StatelessWidget {
 
     return MFutureBuilder<state.CardData>(
       future: card.data,
-      builder: (context, data) => CardContainer(
-        padding: 10,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Stack(
-                alignment: Alignment.topLeft,
-                children: [
-                  Container(
-                    alignment: Alignment.topCenter,
-                    child: Image.network(
-                      data.imageUrl,
-                      filterQuality: FilterQuality.medium,
+      builder: (context, data) {
+        final dialog = GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Center(
+            child: ColumnWithMainChild(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainChild: Flexible(
+                child: Image.network(
+                  data.imageUrl,
+                  filterQuality: FilterQuality.medium,
+                ),
+              ),
+              childrenBelow: [
+                Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  color: const Color.fromARGB(64, 255, 255, 255),
+                  child: SelectableText(
+                    data.description,
+                    style: const TextStyle(
+                      fontSize: 32,
                     ),
                   ),
-                  if (owned)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        deleteButton,
-                        editButton,
-                      ],
-                    ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(15, 5, 15, 10),
-              child: SelectableText(
-                data.description,
-                style: const TextStyle(fontSize: 20),
-              ),
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+
+        return InkWell(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) => dialog,
+            );
+          },
+          child: CardContainer(
+            padding: 10,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Stack(
+                    alignment: Alignment.topLeft,
+                    children: [
+                      Container(
+                        alignment: Alignment.topCenter,
+                        child: Image.network(
+                          data.imageUrl,
+                          filterQuality: FilterQuality.medium,
+                        ),
+                      ),
+                      if (owned)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            deleteButton,
+                            editButton,
+                          ],
+                        ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(15, 5, 15, 10),
+                  child: SelectableText(
+                    data.description,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
