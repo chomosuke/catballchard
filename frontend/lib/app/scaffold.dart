@@ -24,22 +24,24 @@ class MScaffold extends StatefulWidget {
 }
 
 class _MScaffoldState extends State<MScaffold> {
-  state.Section? selected;
+  Future<String>? selectedId;
 
   @override
   Widget build(BuildContext context) {
     return MFutureBuilder<List<dynamic>>(
       future: Future.wait([
         widget.currentState.username,
-        widget.currentState.sections,
+        (() async {
+          for (final section in await widget.currentState.sections) {
+            if (await section.id == await selectedId) {
+              return section;
+            }
+          }
+        })(),
       ]),
       builder: (context, data) {
         final String? username = data[0];
-        final List<state.Section> sections = data[1];
-
-        if (!sections.contains(selected)) {
-          selected = null;
-        }
+        final state.Section? selected = data[1];
 
         return Scaffold(
           appBar: AppBar(
@@ -73,24 +75,24 @@ class _MScaffoldState extends State<MScaffold> {
                 username: widget.currentState.username,
                 onSelect: (section) {
                   setState(() {
-                    selected = section;
+                    selectedId = section.id;
                   });
                 },
               ),
               Expanded(
                 child: selected == null
                     ? const Center(child: Text('no section selected'))
-                    : Section(section: selected!),
+                    : Section(section: selected),
               ),
             ],
           ),
           floatingActionButton:
-              username != null && selected != null && selected!.owned
+              username != null && selected != null && selected.owned
                   ? FloatingActionButton(
                       onPressed: () {
                         showDialog(
                           context: context,
-                          builder: (context) => AddCard(section: selected!),
+                          builder: (context) => AddCard(section: selected),
                         );
                       },
                       tooltip: 'Add new card',
