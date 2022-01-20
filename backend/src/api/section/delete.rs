@@ -9,7 +9,7 @@ pub async fn delete(db: &State<DB>, id: &str, user: User) -> Status {
     } else {
         return Status::NoContent;
     };
-    if get_section(&id, db, &user).await.is_some() {
+    if get_section(&id, db, &user).await.is_none() {
         return Status::NoContent;
     }
 

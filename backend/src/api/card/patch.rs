@@ -17,7 +17,7 @@ pub async fn patch(db: &State<DB>, id: &str, req: Json<Req>, user: User) -> Stat
     } else {
         return Status::NotFound;
     };
-    if get_card(&id, db, &user).await.is_some() {
+    if get_card(&id, db, &user).await.is_none() {
         return Status::NotFound;
     }
 
@@ -37,7 +37,7 @@ pub async fn patch(db: &State<DB>, id: &str, req: Json<Req>, user: User) -> Stat
     } else {
         None
     };
-    if section_id.is_some() && get_section(&section_id.unwrap(), db, &user).await.is_some() {
+    if section_id.is_some() && get_section(&section_id.unwrap(), db, &user).await.is_none() {
         return Status::UnprocessableEntity;
     }
 

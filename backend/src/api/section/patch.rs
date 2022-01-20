@@ -14,7 +14,7 @@ pub async fn patch(db: &State<DB>, id: &str, req: Json<Req>, user: User) -> Stat
     } else {
         return Status::NotFound;
     };
-    if get_section(&id, db, &user).await.is_some() {
+    if get_section(&id, db, &user).await.is_none() {
         return Status::NotFound;
     }
 

@@ -32,7 +32,7 @@ pub async fn post(db: &State<DB>, new: Json<Req>, user: User) -> Result<Json<Res
         return Err(Status::UnprocessableEntity);
     };
 
-    if get_section(&section_id, db, &user).await.is_some() {
+    if get_section(&section_id, db, &user).await.is_none() {
         return Err(Status::UnprocessableEntity);
     }
     let id = db.cards.insert_one(Card {
