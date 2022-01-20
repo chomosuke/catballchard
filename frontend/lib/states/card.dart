@@ -33,7 +33,7 @@ class Card {
             http.CardPatch(
               imageUrl,
               description,
-              await section.id,
+              null,
               (await section.data).cards.indexOf(previous),
             ),
             await previous.id,

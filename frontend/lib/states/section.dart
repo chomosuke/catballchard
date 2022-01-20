@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:frontend/http/all.dart' as http;
 
 import 'card.dart';
@@ -81,6 +83,30 @@ class Section {
       : data = (() async {
           http.patchSection(http.SectionPatch(name), await previous.id);
           return SectionData(name, (await previous.data).cards);
+        })(),
+        owned = previous.owned,
+        id = previous.id;
+
+  Section.reorder(Section previous, int oldIndex, int newIndex)
+      : data = (() async {
+          final data = await previous.data;
+          final newData = SectionData(data.name, List.from(data.cards));
+          final card = newData.cards.removeAt(oldIndex);
+          newData.cards.insert(newIndex, card);
+          for (int i = min(newIndex, oldIndex);
+              i <= max(newIndex, oldIndex);
+              i++) {
+            await http.patchCard(
+              http.CardPatch(
+                null,
+                null,
+                null,
+                i,
+              ),
+              await newData.cards[i].id,
+            );
+          }
+          return newData;
         })(),
         owned = previous.owned,
         id = previous.id;
