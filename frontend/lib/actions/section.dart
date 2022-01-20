@@ -32,3 +32,18 @@ class DeleteSection extends Action {
     return State.removeSection(await state, section);
   }
 }
+
+class ReorderCards extends Action {
+  final Section section;
+  final int oldIndex;
+  final int newIndex;
+  ReorderCards(this.section, this.oldIndex, this.newIndex);
+
+  @override
+  Future<State> act(Future<State> state) async {
+    return State.replaceSection(
+      await state,
+      Section.reorder(section, oldIndex, newIndex),
+    );
+  }
+}

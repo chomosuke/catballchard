@@ -7,7 +7,7 @@ pub struct Req {
     image_url: Option<String>,
     description: Option<String>,
     section_id: Option<String>,
-    order: Option<String>,
+    order: Option<i32>,
 }
 
 #[patch("/<id>", data = "<req>")]

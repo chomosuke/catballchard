@@ -96,7 +96,7 @@ class Section {
           for (int i = min(newIndex, oldIndex);
               i <= max(newIndex, oldIndex);
               i++) {
-            await http.patchCard(
+            http.patchCard(
               http.CardPatch(
                 null,
                 null,
