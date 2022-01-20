@@ -19,7 +19,7 @@ class Card {
                 imageUrl,
                 description,
                 await section.id,
-                (await section.data).cards.length,
+                (await section.data).cards.length - 1,
               ),
             ))();
 
