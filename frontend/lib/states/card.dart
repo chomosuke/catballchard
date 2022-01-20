@@ -15,7 +15,12 @@ class Card {
   Card.post(String imageUrl, String description, this.section)
       : data = Future.value(CardData(imageUrl, description)),
         id = (() async => http.postCard(
-              http.NewCard(imageUrl, description, await section.id),
+              http.NewCard(
+                imageUrl,
+                description,
+                await section.id,
+                (await section.data).cards.length,
+              ),
             ))();
 
   Card.patch(
@@ -25,7 +30,12 @@ class Card {
     this.section,
   )   : data = (() async {
           await http.patchCard(
-            http.CardPatch(imageUrl, description, await section.id),
+            http.CardPatch(
+              imageUrl,
+              description,
+              await section.id,
+              (await section.data).cards.indexOf(previous),
+            ),
             await previous.id,
           );
           return CardData(

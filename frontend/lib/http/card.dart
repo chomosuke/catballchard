@@ -10,12 +10,14 @@ class NewCard {
   final String imageUrl;
   final String description;
   final String sectionId;
-  NewCard(this.imageUrl, this.description, this.sectionId);
+  final int order;
+  NewCard(this.imageUrl, this.description, this.sectionId, this.order);
   toReq() {
-    return <String, String>{
+    return <String, dynamic>{
       'image_url': imageUrl,
       'description': description,
       'section_id': sectionId,
+      'order': order,
     };
   }
 }
@@ -58,9 +60,10 @@ class CardPatch {
   final String? imageUrl;
   final String? description;
   final String? sectionId;
-  CardPatch(this.imageUrl, this.description, this.sectionId);
+  final int? order;
+  CardPatch(this.imageUrl, this.description, this.sectionId, this.order);
   toReq() {
-    final req = <String, String>{};
+    final req = <String, dynamic>{};
     if (imageUrl != null) {
       req['image_url'] = imageUrl!;
     }
@@ -69,6 +72,9 @@ class CardPatch {
     }
     if (sectionId != null) {
       req['section_id'] = sectionId!;
+    }
+    if (order != null) {
+      req['order'] = order!;
     }
     return req;
   }
