@@ -1,6 +1,6 @@
 use mongodb::bson::{doc, oid::ObjectId};
 use rocket::{State, delete, http::Status};
-use crate::db::{DB, User, verify_card_id};
+use crate::db::{DB, User, get_card};
 
 #[delete("/<id>")]
 pub async fn delete(db: &State<DB>, id: &str, user: User) -> Status {
@@ -9,7 +9,7 @@ pub async fn delete(db: &State<DB>, id: &str, user: User) -> Status {
     } else {
         return Status::NoContent;
     };
-    if !verify_card_id(&id, db, &user).await {
+    if get_card(&id, db, &user).await.is_none() {
         return Status::NoContent;
     }
 

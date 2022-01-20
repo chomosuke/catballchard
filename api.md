@@ -15,6 +15,7 @@
     image_url: string,
     description: string,
     section_id: string,
+    order: number,
 }
 ```
 - response:
@@ -42,6 +43,7 @@
     image_url?: string,
     description?: string,
     section_id?: string,
+    order?: number,
 }
 ```
 - response: None
@@ -80,7 +82,7 @@
 - request: auth token
 ```
 {
-    name: string
+    name: string,
 }
 ```
 

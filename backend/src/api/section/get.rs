@@ -1,4 +1,4 @@
-use mongodb::bson::{oid::ObjectId, doc};
+use mongodb::{bson::{oid::ObjectId, doc}, options::FindOptions};
 use rocket::{get, serde::{json::Json, Serialize}, State};
 use futures::StreamExt;
 use crate::db::DB;
@@ -24,7 +24,8 @@ pub async fn get(db: &State<DB>, id: &str) -> Option<Json<Res>> {
     ).await.unwrap()?;
 
     let mut cards = db.cards.find(
-        doc! { "section_id": section._id }, None
+        doc! { "section_id": section._id },
+        FindOptions::builder().sort(doc! {"order": 1}).build(),
     ).await.unwrap();
     let mut card_ids = Vec::new();
     while let Some(card) = cards.next().await {

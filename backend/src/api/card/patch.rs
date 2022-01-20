@@ -1,5 +1,5 @@
 use rocket::{patch, serde::{json::Json, Deserialize}, State, http::Status};
-use crate::db::{DB, User, verify_card_id, verify_section_id};
+use crate::db::{DB, User, get_card, get_section};
 use mongodb::bson::{doc, Document, oid::ObjectId};
 
 #[derive(Deserialize)]
@@ -7,6 +7,7 @@ pub struct Req {
     image_url: Option<String>,
     description: Option<String>,
     section_id: Option<String>,
+    order: Option<String>,
 }
 
 #[patch("/<id>", data = "<req>")]
@@ -16,11 +17,16 @@ pub async fn patch(db: &State<DB>, id: &str, req: Json<Req>, user: User) -> Stat
     } else {
         return Status::NotFound;
     };
-    if !verify_card_id(&id, db, &user).await {
+    if get_card(&id, db, &user).await.is_some() {
         return Status::NotFound;
     }
 
-    let Req { image_url, description, section_id } = req.into_inner();
+    let Req {
+        image_url,
+        description,
+        section_id,
+        order,
+    } = req.into_inner();
     let section_id = 
     if let Some(section_id) = section_id {
         if let Ok(section_id) = ObjectId::parse_str(section_id) {
@@ -31,7 +37,7 @@ pub async fn patch(db: &State<DB>, id: &str, req: Json<Req>, user: User) -> Stat
     } else {
         None
     };
-    if section_id.is_some() && !verify_section_id(&section_id.as_ref().unwrap(), db, &user).await {
+    if section_id.is_some() && get_section(&section_id.unwrap(), db, &user).await.is_some() {
         return Status::UnprocessableEntity;
     }
 
@@ -45,6 +51,9 @@ pub async fn patch(db: &State<DB>, id: &str, req: Json<Req>, user: User) -> Stat
     }
     if let Some(section_id) = section_id {
         update.insert("section_id", section_id);
+    }
+    if let Some(order) = order {
+        update.insert("order", order);
     }
     let update = doc! { "$set": update };
 

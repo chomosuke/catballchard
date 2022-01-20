@@ -22,20 +22,21 @@ pub struct Card {
     pub image_url: String,
     pub description: String,
     pub section_id: ObjectId,
+    pub order: i32,
 }
 
-pub async fn verify_card_id(card_id: &ObjectId, db: &DB, user: &User) -> bool {
+pub async fn get_card(card_id: &ObjectId, db: &DB, user: &User) -> Option<Card> {
     let card = db.cards.find_one(doc! { "_id": card_id }, None).await.unwrap();
     if card.is_none() {
-        return false;
+        return None;
     }
     let card = card.unwrap();
     let section = db.sections.find_one(doc! { "_id": card.section_id }, None)
         .await.unwrap().expect(&format!("orphanded card, id: {}", &card._id.unwrap().to_string()));
     if section.user_id != user._id.unwrap() {
-        return false;
+        return None;
     }
-    return true;
+    return Some(card);
 }
 
 #[derive(Deserialize, Serialize)]
@@ -46,14 +47,15 @@ pub struct Section {
     pub user_id: ObjectId,
 }
 
-pub async fn verify_section_id(section_id: &ObjectId, db: &DB, user: &User) -> bool {
-    let section
-        = db.sections.find_one(doc! { "_id": section_id }, None).await.unwrap();
-    if section.is_none() || section.as_ref().unwrap().user_id != user._id.unwrap() {
-        return false;
-    } else {
-        return true;
-    }
+pub async fn get_section(section_id: &ObjectId, db: &DB, user: &User) -> Option<Section> {
+    let section = db.sections.find_one(
+        doc! {
+            "_id": section_id,
+            "user_id": user._id.unwrap(),
+        },
+        None,
+    ).await.unwrap();
+    return section;
 }
 
 #[derive(Deserialize, Serialize)]

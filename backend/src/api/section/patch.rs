@@ -1,5 +1,5 @@
 use rocket::{patch, serde::{json::Json, Deserialize}, State, http::Status};
-use crate::db::{DB, User, verify_section_id};
+use crate::db::{DB, User, get_section};
 use mongodb::bson::{doc, oid::ObjectId};
 
 #[derive(Deserialize)]
@@ -14,7 +14,7 @@ pub async fn patch(db: &State<DB>, id: &str, req: Json<Req>, user: User) -> Stat
     } else {
         return Status::NotFound;
     };
-    if !verify_section_id(&id, db, &user).await {
+    if get_section(&id, db, &user).await.is_some() {
         return Status::NotFound;
     }
 
