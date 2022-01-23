@@ -34,7 +34,7 @@ dependencies:
   mime: ^1.0.1
   image: ^3.0.8
   isolated_worker: ^0.1.0
-  flex_with_main_child: ^0.1.0
+  flex_with_main_child: ^0.2.0
   http_status_code: ^0.0.2
   crypto: ^3.0.1
   flutter_redux: ^0.8.2

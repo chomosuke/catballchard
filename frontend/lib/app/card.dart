@@ -41,6 +41,8 @@ class Card extends StatelessWidget {
 
     final owned = card.section.owned;
 
+    final key = GlobalKey();
+
     return MFutureBuilder<state.CardData>(
       future: card.data,
       builder: (context, data) {
@@ -51,13 +53,15 @@ class Card extends StatelessWidget {
           child: Center(
             child: ColumnWithMainChild(
               mainAxisAlignment: MainAxisAlignment.center,
-              mainChild: Flexible(
-                child: Image.network(
-                  data.imageUrl,
-                  filterQuality: FilterQuality.medium,
+              mainChildKey: key,
+              children: [
+                Flexible(
+                  key: key,
+                  child: Image.network(
+                    data.imageUrl,
+                    filterQuality: FilterQuality.medium,
+                  ),
                 ),
-              ),
-              childrenBelow: [
                 Container(
                   alignment: Alignment.center,
                   width: double.infinity,
