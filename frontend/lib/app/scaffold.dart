@@ -32,7 +32,9 @@ class _MScaffoldState extends State<MScaffold> {
       future: Future.wait([
         widget.currentState.username,
         (() async {
-          for (final section in await widget.currentState.sections) {
+          final sections = await widget.currentState.sections;
+          selectedId ??= sections.isEmpty ? null : sections[0].id;
+          for (final section in sections) {
             if (await section.id == await selectedId) {
               return section;
             }
