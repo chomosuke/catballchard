@@ -4,7 +4,7 @@ COPY /backend .
 RUN cargo build --release
 
 FROM debian:bullseye as frontend_builder
-RUN apt update && apt install -y curl git unzip xz-utils zip
+RUN apt-get update && apt-get install -y curl git unzip xz-utils zip
 USER root
 WORKDIR /home/root
 
@@ -23,4 +23,4 @@ COPY --from=backend_builder /usr/src/backend/target/release/backend ./backend/
 COPY --from=frontend_builder /home/root/frontend/build/web/ ./web_build
 
 WORKDIR /root/backend
-CMD ./backend -p $PORT -a 0.0.0.0 -c $DB_STRING -s $SECRET_KEY
+CMD ./backend -p 80 -a 0.0.0.0 -c $DB_STRING -s $SECRET_KEY

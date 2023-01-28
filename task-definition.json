@@ -1,0 +1,25 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "catballchard",
+            "memoryReservation": 6,
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 8001,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true
+        }
+    ],
+    "family": "catballchard",
+    "networkMode": "host",
+    "runtimePlatform": {
+        "cpuArchitecture": "ARM64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "requiresCompatibilities": [
+        "EC2"
+    ]
+}
