@@ -35,6 +35,9 @@ jobs:
         with:
           registry-type: public
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
