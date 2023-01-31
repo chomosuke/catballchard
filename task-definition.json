@@ -2,18 +2,38 @@
     "containerDefinitions": [
         {
             "name": "catballchard",
+            "image": "<Fill image name here>",
             "memoryReservation": 6,
             "portMappings": [
                 {
-                    "containerPort": 80,
+                    "containerPort": 8001,
                     "hostPort": 8001,
                     "protocol": "tcp"
                 }
             ],
-            "essential": true
+            "essential": true,
+            "environment": [
+                {
+                    "name": "PORT",
+                    "value": "8001"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "DB_STRING",
+                    "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:441989054812:secret:mongodb-connection-string-QrgI7y"
+                },
+                {
+                    "name": "SECRET_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:441989054812:secret:random-secret-oQa0Fy"
+                }
+            ]
         }
     ],
     "family": "catballchard",
+    "executionRoleArn": "arn:aws:iam::441989054812:role/ecs-get-secret",
     "networkMode": "host",
     "runtimePlatform": {
         "cpuArchitecture": "ARM64",
