@@ -49,7 +49,7 @@ class _MScaffoldState extends State<MScaffold> {
           appBar: AppBar(
             leading: Image.network(baseUrl.resolve('favicon.ico').toString()),
             title: const Text('CatBallChard'),
-            leadingWidth: 56 / 210 * 240,
+            leadingWidth: 56,
             actions: username != null
                 ? [
                     Center(child: Text('Hello $username!')),
