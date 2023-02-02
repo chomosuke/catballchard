@@ -10,15 +10,12 @@
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "favicon.ico",
-            "sizes": "241x210",
-            "type": "image/png"
+            "src": "icons/Icon-192.ico",
+            "sizes": "192x192"
         },
         {
-            "src": "favicon.ico",
-            "sizes": "241x210",
-            "type": "image/png",
-            "purpose": "maskable"
+            "src": "icons/Icon-512.ico",
+            "sizes": "512x512"
         }
     ]
 }
