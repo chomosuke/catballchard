@@ -16,7 +16,7 @@ COPY ./frontend ./frontend
 WORKDIR /home/root/frontend
 RUN flutter build web --web-renderer canvaskit
 
-FROM node:16 as worker_builder
+FROM node:19-alpine as worker_builder
 RUN npm install -g browserify
 COPY ./frontend/web_worker /app
 WORKDIR /app
