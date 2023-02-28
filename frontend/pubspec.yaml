@@ -41,7 +41,6 @@ dependencies:
   redux: ^5.0.0
   flutter_secure_storage: ^5.0.2
   reorderable_grid_view: ^2.2.2
-  # fluttertoast: ^8.0.8
 
 dev_dependencies:
   flutter_test:

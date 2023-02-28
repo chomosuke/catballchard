@@ -1,4 +1,4 @@
 /backend/target/
 /frontend/build/
-/frontend/web_worker/
+/frontend/web_worker/node_modules
 /web_build/
